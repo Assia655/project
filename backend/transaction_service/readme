@@ -1,0 +1,36 @@
+transaction_service/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── db/
+│   │   ├── __init__.py
+│   │   ├── session.py
+│   │   ├── base.py
+│   │   └── initdb.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── transactions.py
+│   │   ├── announcements.py
+│   │   └── market_prices.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── transaction.py
+│   │   ├── announcement.py
+│   │   └── market_price.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── transactions.py
+│   │   ├── announcements.py
+│   │   └── market_prices.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── kafka_producer.py
+│   │   ├── kafka_consumer.py
+│   │   └── user_service_api.py
+│   └── migrations/
+│       ├── env.py
+│       ├── script.py.mako
+│       └── versions/
+│           └── <timestamp>_initial_tables.py
+├── requirements.txt
+└── Dockerfile
