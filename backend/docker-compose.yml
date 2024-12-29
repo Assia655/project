@@ -5,17 +5,17 @@ services:
   api-gateway:
     build:
       context: ./api-gateway
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # Spécifie explicitement le chemin du Dockerfile
     ports:
-      - "8000:8000"
+      - "8005:8005"
     depends_on:
       - user_service
       - transaction_service
       - blockchain_service
     environment:
-      - USER_SERVICE_URL=http://user_service:8001
-      - TRANSACTION_SERVICE_URL=http://transaction_service:8002
-      - BLOCKCHAIN_SERVICE_URL=http://blockchain_service:8003
+      USER_SERVICE_URL: "http://user_service:8004"
+      TRANSACTION_SERVICE_URL: "http://transaction_service:8003"
+      BLOCKCHAIN_SERVICE_URL: "http://blockchain_service:8001"
     networks:
       - fintech-network
 
@@ -23,11 +23,11 @@ services:
   user_service:
     build:
       context: ./user_service
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # Spécifie explicitement le chemin du Dockerfile
     ports:
-      - "8001:8001"
+      - "8004:8004"
     environment:
-      - DATABASE_URL=postgresql://user:password@user_db:5432/users
+      DATABASE_URL: "postgresql://user:password@user_db:5432/users"
     depends_on:
       - user_db
     networks:
@@ -37,12 +37,12 @@ services:
   transaction_service:
     build:
       context: ./transaction_service
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # Spécifie explicitement le chemin du Dockerfile
     ports:
-      - "8002:8002"
+      - "8003:8003"
     environment:
-      - DATABASE_URL=postgresql://user:password@transaction_db:5432/transactions
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      DATABASE_URL: "postgresql://user:password@transaction_db:5432/transactions"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
     depends_on:
       - transaction_db
       - kafka
@@ -53,9 +53,9 @@ services:
   blockchain_service:
     build:
       context: ./blockchain_service
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # Spécifie explicitement le chemin du Dockerfile
     ports:
-      - "8003:8003"
+      - "8001:8001"
     networks:
       - fintech-network
 
@@ -64,9 +64,9 @@ services:
     image: postgres:15
     container_name: user_db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: users
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "users"
     volumes:
       - user_db_data:/var/lib/postgresql/data
     networks:
@@ -77,39 +77,38 @@ services:
     image: postgres:15
     container_name: transaction_db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: transactions
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "transactions"
     volumes:
       - transaction_db_data:/var/lib/postgresql/data
     networks:
       - fintech-network
 
-    price_service:
-  build:
-    context: ./price_service
-    dockerfile: Dockerfile
-  environment:
-    - DATABASE_URL=postgresql://user:password@price_service_db:5432/price_service_db
-  depends_on:
-    - price_service_db
-  networks:
-    - fintech-network
+  # Price Service
+  price_service:
+    build:
+      context: ./price_service/app
+      dockerfile: Dockerfile  # Spécifie explicitement le chemin du Dockerfile
+    environment:
+      DATABASE_URL: "postgresql://user:password@price_service_db:5432/price_service_db"
+    depends_on:
+      - price_service_db
+    networks:
+      - fintech-network
 
-price_service_db:
-  image: postgres:15
-  container_name: price_service_db
-  environment:
-    POSTGRES_USER: user
-    POSTGRES_PASSWORD: password
-    POSTGRES_DB: price_service_db
-  volumes:
-    - price_service_db_data:/var/lib/postgresql/data
-  networks:
-    - fintech-network
-
-
-
+  # Price Service Database
+  price_service_db:
+    image: postgres:15
+    container_name: price_service_db
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "price_service_db"
+    volumes:
+      - price_service_db_data:/var/lib/postgresql/data
+    networks:
+      - fintech-network
 
   # Kafka
   kafka:
@@ -118,9 +117,9 @@ price_service_db:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
     ports:
       - "9092:9092"
     networks:
