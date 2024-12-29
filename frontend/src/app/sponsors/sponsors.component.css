@@ -1,0 +1,39 @@
+.sponsorship {
+    /* margin-top: 40px; */
+    /* border: 2px solid rgb(44, 98, 73); */
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    padding: 20px; /* Adjust padding as needed */
+    background-color: rgb(235, 253, 244);
+    box-shadow: 0px 2px 20px rgb(56, 56, 56);
+}
+   
+/* .sponsorship h1 {
+    font-size: 1.5rem ; 
+    margin-bottom: 20px;
+    font-weight: 400; 
+    color: rgba(24, 66, 47);
+} */
+.logos-slide{
+    display: inline-block;
+    animation: 35s slide infinite linear;
+}
+.logos-slide img{
+    height: 50px;
+}
+.logos-grp{
+    overflow: hidden;
+    padding: 50px 0px;
+    background: var(white);
+    white-space: nowrap;
+    position: relative;
+}
+
+.logos-slide img{
+    height: 50px;
+    margin: 0 95px;
+}

@@ -1,0 +1,53 @@
+.footer {
+    background-color: #24262b;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.row {
+    display: flex; /* Enable Flexbox to place columns in the same row */
+    justify-content: space-around; /* Distribute space between columns */
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.row .col {
+    text-align: left;
+    margin: 0 20px; /* Add horizontal margin for spacing */
+    flex: 1; /* Ensure columns adjust to available space */
+    max-width: 300px; /* Optional: Limit column width */
+}
+
+.row .col img {
+    width: 100px;
+    margin: 20px 0;
+}
+
+.row .col h2 {
+    margin-top: 20px;
+    color: #fff; /* Ensure text stands out */
+}
+
+.row .col ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+.row .col ul li {
+    padding-top: 10px;
+    padding-right: 20px;
+    color: #ccc; /* Make list text readable */
+}
+.row .col ul li a {
+    color: #ccc; /* Link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease;
+}
+.row .col ul li a:hover {
+    color: #fff; /* Highlight link on hover */
+}
+.row .col2{
+    margin-top: 20px;
+}
+iframe{
+    width: 400px;
+    height: 200px;
+}

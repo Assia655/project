@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" class="toolbar">
+  <!-- Logo on the left -->
+  <div class="logo">
+    <img src="assets/logo_dark.png" alt="Logo" class="logo-img" />
+  </div>
+
+  <!-- Center navigation links -->
+  <div class="nav-links">
+    <a routerLink="/home">Home</a>
+    <a routerLink="/sponsors">Sponsors</a>
+    <a routerLink="/about">About</a>
+    <a routerLink="/contact">Contact</a>
+  </div>
+
+  <!-- Login button and dark mode toggle on the right -->
+  <div class="toolbar-actions">
+    <button mat-raised-button routerLink="/login" class="login-btn">Login</button>
+    <button mat-icon-button (click)="toggleDarkMode()" class="mode">
+      <mat-icon>{{ isDarkMode ? 'brightness_7' : 'brightness_4' }}</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+

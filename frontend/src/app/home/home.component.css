@@ -1,0 +1,65 @@
+.main-content {
+    padding-left: 50px;
+    padding-right: 50px;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 91vh;
+  }
+  
+  .left-part {
+    flex: 1;
+    margin-right: 20px;
+    margin-top: 120px;
+  }
+  .left-part h1{
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  
+  .right-part {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(235, 253, 244);
+    z-index: -1;
+  }
+  
+  .button-container {
+    margin-top: 100px;
+    justify-content: space-between;
+  }
+  .button-container button{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 25px;
+    border: none;
+    margin-right: 20px;
+    font-weight: bold;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.43);
+
+  }
+  .button-container .buy-btn{
+    background-color: rgba(24, 66, 47, 0.615);
+    color: white;
+    transition: 0.5s ease;
+  }
+  .button-container .buy-btn:hover{
+    background-color: rgba(252, 255, 254, 0.816);
+    color: rgba(24, 66, 47);
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.43);
+  }
+  .button-container .sell-btn{
+    background-color: rgba(252, 255, 254, 0.816);
+    color: rgba(24, 66, 47);
+    transition: 0.5s ease;
+  }
+  .button-container .sell-btn:hover{
+    background-color: rgba(24, 66, 47, 0.615);
+    color: white;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.43);
+  }
