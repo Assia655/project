@@ -2,22 +2,20 @@
     <div class="form login">
       <div class="form-content">
         <header>Login</header>
-        <form action="#">
+        <form (submit)="onLogin($event)">
           <div class="field input-field">
-            <input type="email" placeholder="Email" class="input">
+            <input type="text" name="username" placeholder="Username" [(ngModel)]="username" class="input" required>
           </div>
           <div class="field input-field">
-            <input type="password" placeholder="Password" class="password">
-            <i class='bx bx-hide eye-icon'></i>
+            <input type="password" name="password" placeholder="Password" [(ngModel)]="password" class="password" required>
           </div>
-          
           <div class="field button-field">
-            <button>Login</button>
+            <button type="submit">Login</button>
           </div>
         </form>
         <div class="form-link">
-          <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
-        </div>
+          <span>Don't have an account? <a routerLink="/signup" class="link signup-link">Signup</a></span>
+        </div>        
       </div>
     </div>
   </section>
