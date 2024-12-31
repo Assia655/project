@@ -14,7 +14,7 @@ import { LeftSideBarComponent } from './left-side-bar/left-side-bar.component';
   standalone: true,
   // imports: [RouterOutlet, HeaderComponent, HomeComponent, SponsorsComponent, AboutComponent],
   // imports: [RouterOutlet, LoginComponent, HeaderComponent],
-  imports: [RouterOutlet, SignupComponent, HeaderComponent,LeftSideBarComponent],
+  imports: [RouterOutlet,HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

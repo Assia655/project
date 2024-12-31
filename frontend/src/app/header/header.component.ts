@@ -4,6 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
+import { LoginComponent } from '../login/login.component';
+import { SponsorsComponent } from '../sponsors/sponsors.component';
+import { SignupComponent } from '../signup/signup.component';
+import { AboutComponent } from '../about/about.component';
 
 @Component({
   selector: 'app-header',

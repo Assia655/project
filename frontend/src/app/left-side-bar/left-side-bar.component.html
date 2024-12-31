@@ -2,12 +2,12 @@
 
     <ul class="nav-links">
       <li>
-        <a href="#">
+        <a routerLink="/dashboard/wallets"  >
           <i class='bx bx-grid-alt' ></i>
-          <span class="link_name">Dashboard</span>
+          <span class="link_name" >Dashboard</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Category</a></li>
+          <li><a class="link_name" routerLink="/dashboard/wallets" >Category</a></li>
         </ul>
       </li>
       <li>
@@ -129,3 +129,6 @@
     sidebar.classList.toggle("close");
   });
   </script>
+  <div class="main-content">
+    <router-outlet></router-outlet> <!-- Contenu dynamique -->
+  </div>
