@@ -1,4 +1,3 @@
-# Étape 1 : Construire l'environnement à partir d'une image Python légère
 FROM python:3.10-slim AS base
 
 # Définir le répertoire de travail à l'intérieur du conteneur
@@ -14,7 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exposer le port utilisé par l'application FastAPI
-EXPOSE 8000
+EXPOSE 8004
 
 # Définir la commande de démarrage pour Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]

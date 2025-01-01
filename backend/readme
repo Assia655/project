@@ -1,0 +1,74 @@
+                 +-------------------+
+                 |     API Gateway   |
+                 | (OAuth2/JWT Auth) |
+                 +---------+---------+
+                           |
+     +---------------------+---------------------+
+     |                                           |
++------------+                            +---------------+
+| User       |                            | Blockchain     |
+| Service    |                            | Service        |
+| (JWT, DB)  |                            | (Smart Contract|
++------------+                            | Interaction)   |
+     |                                    +---------------+
+     |
++-----------------+
+| Transaction     |
+| Service         |
+| (Payments, etc) |
++-----------------+
+
+Services Définis :
+
+Accéder aux services :
+API Gateway : http://localhost:8000
+User Service : http://localhost:8001/users
+Transaction Service : http://localhost:8002/transactions
+Blockchain Service : http://localhost:8003/blockchain
+
+(bach n activer envi : 
+.\venv\Scripts\activate )
+
+
+├── Payment Service(service 2)
+│   ├── Base de données : postgresql_payment_service
+│   └── Services :
+│       ├── createOrder()
+│       ├── validatePayment()
+│       ├── processTransfer()
+│       └── generateInvoice()
+│
+├── Blockchain Service
+│   ├── Base de données : postgresql_blockchain_service
+│   └── Services :
+│       ├── createBlockchainTransaction()
+│       ├── interactWithSmartContract()
+│       └── verifyBlockchainTransaction()
+
+
+3. Diagramme de Classe pour le Microservice de Transactions Blockchain
+BlockchainTransaction: Représente les transactions sur la blockchain.
+SmartContract: Gère les interactions avec les smart contracts.
+MetaMaskWallet: Intègre MetaMask pour les interactions utilisateur.
++----------------------+        +-----------------+
+|  BlockchainTransaction|        | SmartContract   |
++----------------------+        +-----------------+
+| txHash: str          |        | contractAddress: str |
+| amount: float        |        | invokeContract()     |
+| tokenType: str       |        | stakeTokens()        |
++----------------------+        | withdrawTokens()     |
+                                +-----------------+
+                                     |
+                                     v
+                               +-------------------+
+                               | MetaMaskWallet    |
+                               +-------------------+
+                               | connectWallet()   |
+                               | sendTransaction() |
+                               +-------------------+
+
+- Microservice Transactions classiques (Service 2)
+  - Base de données : PostgreSQL (base de données pour les paiements, virements, etc.)
+
+- Microservice Transactions blockchain (Service 3)
+  - Base de données : MongoDB ou PostgreSQL (gestion des transactions blockchain, enregistrement des transactions blockchain)                               
