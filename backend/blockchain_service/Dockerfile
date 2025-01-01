@@ -16,4 +16,8 @@ COPY . .
 EXPOSE 8001
 
 # Définir la commande de démarrage pour Uvicorn
+<<<<<<< HEAD
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+=======
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+>>>>>>> 946826686aaa683e610d177faa214ae6d94a4c96
