@@ -1,4 +1,3 @@
-# Étape 1 : Construire l'environnement à partir d'une image Python légère
 FROM python:3.10-slim AS base
 
 # Définir le répertoire de travail à l'intérieur du conteneur
@@ -17,4 +16,8 @@ COPY . .
 EXPOSE 8004
 
 # Définir la commande de démarrage pour Uvicorn
+<<<<<<< HEAD
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
+=======
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
+>>>>>>> 946826686aaa683e610d177faa214ae6d94a4c96

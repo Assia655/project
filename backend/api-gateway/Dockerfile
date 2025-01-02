@@ -14,4 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8005
 
 # Lancer l'application
+<<<<<<< HEAD
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8005"]
+=======
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8005"]
+>>>>>>> 946826686aaa683e610d177faa214ae6d94a4c96

@@ -1,13 +1,18 @@
 import requests
 
-PRICE_SERVICE_URL = "http://127.0.0.1:8003"  # Adresse du service Price Service
+PRICE_SERVICE_URL = "http://127.0.0.1:8002"  # Adresse du service Price Service
 
-def get_price(currency: str) -> float:
-
+def get_price(currency: str):
+    """Récupère le prix actuel de la devise ou de l'actif depuis price_service."""
+    if currency != "MCO2":
+        raise ValueError("Price service only supports MCO2 transactions")
+    url = f"{PRICE_SERVICE_URL}/prices/{currency}"
     try:
-        response = requests.get(f"{PRICE_SERVICE_URL}/prices/{currency}")
-        response.raise_for_status()  # Vérifie les erreurs HTTP
-        data = response.json()
-        return data["price"]
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()["price"]
+        else:
+            raise ValueError(f"Failed to fetch price for {currency}: {response.status_code}")
     except requests.exceptions.RequestException as e:
-        raise ValueError(f"Failed to fetch price for {currency}: {e}")
+        raise ConnectionError(f"Failed to connect to Price Service: {e}")
+

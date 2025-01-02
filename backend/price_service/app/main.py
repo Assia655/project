@@ -13,11 +13,11 @@ def fetch_latest_price(currency: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=f"No price found for {currency}")
     return {"currency": price.currency, "price": price.price, "timestamp": price.timestamp}
 
-@app.get("/prices")
+@app.get("/prices", response_model=list)
 def fetch_all_prices(db: Session = Depends(get_db)):
+    """Récupère tous les derniers prix disponibles."""
     prices = get_all_prices(db)
-    return {"prices": prices}
-
+    return prices
 
 @app.post("/scrape", response_model=dict)
 def scrape_and_store(db: Session = Depends(get_db)):

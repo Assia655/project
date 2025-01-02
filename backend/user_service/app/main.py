@@ -9,7 +9,7 @@ from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-app = FastAPI()
+app = FastAPI(title="user_service")
 
 # Endpoint pour créer un utilisateur
 @app.post("/users/", response_model=UserResponse)
