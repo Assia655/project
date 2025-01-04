@@ -8,7 +8,7 @@ from app.models.wallet import Wallet  # Import explicite des modèles
 
 # Configurer Alembic
 config = context.config
-config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@localhost:5432/user_service_db')
+config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@user_db:5432/user_service_db')
 
 # Configurer les logs
 if config.config_file_name is not None:

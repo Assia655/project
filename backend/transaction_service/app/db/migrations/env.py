@@ -10,6 +10,8 @@ from app.db.base import Base
 
 # Configuration Alembic
 config = context.config
+config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@transaction_db:5432/transaction_service_db')
+
 
 # Lecture de la configuration de logging
 if config.config_file_name is not None:

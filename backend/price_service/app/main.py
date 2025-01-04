@@ -2,8 +2,13 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.services.market_prices import get_all_prices, get_latest_price, scrape_and_store_prices
+from app.db.initdb import create_tables
 
-app = FastAPI(title="Price Service API")
+
+app = FastAPI()
+@app.on_event("startup")
+async def startup_event():
+    create_tables()
 
 @app.get("/prices/{currency}", response_model=dict)
 def fetch_latest_price(currency: str, db: Session = Depends(get_db)):

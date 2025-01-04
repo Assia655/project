@@ -1,10 +1,11 @@
 requests
+pydantic>=2.0
 fastapi
+alembic
 uvicorn
 bcrypt
 python-jose[cryptography]
 sqlalchemy
-pydantic
 psycopg2-binary
 python-multipart
 bs4
