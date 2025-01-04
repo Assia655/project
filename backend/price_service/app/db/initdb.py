@@ -1,5 +1,5 @@
-from db.session import engine
-from db.base import Base
+from app.db.session import engine
+from app.db.base import Base
 
 def create_tables():
     """Créer les tables dans la base de données."""

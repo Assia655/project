@@ -1,4 +1,4 @@
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, field_validator
 from typing import Literal, Optional
 from enum import Enum
 from datetime import datetime
@@ -17,7 +17,7 @@ class TransactionCreate(BaseModel):
     currency: Literal["USD"]  # Restreint aux devises supportées
     type: TransactionType
 
-    @root_validator
+    @field_validator("*", mode="after")
     def check_transaction_fields(cls, values):
         credit_amount = values.get('credit_amount')
         if credit_amount <= 0:

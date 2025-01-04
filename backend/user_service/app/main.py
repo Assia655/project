@@ -1,15 +1,53 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+import psycopg2
+import time  
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.db.session import get_db
 from app.schemas import UserCreate, User, UserProfileCreate, UserProfileResponse, UserResponse, WalletCreate, WalletResponse
 from app.services.user import authenticate_user, create_user, get_user_by_id
 from app.utils.jwt import create_access_token, verify_access_token
 from app.models.user import User
+from contextlib import asynccontextmanager
+from app.db.initdb import create_tables
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     # Startup logic
+#     print("Starting up...")
+#     # Check database readiness
+#     while True:
+#         try:
+#             conn = psycopg2.connect(
+#                 dbname="user_service_db",
+#                 user="postgres",
+#                 password="1234",
+#                 host="user_db",
+#                 port="5432"
+#             )
+#             conn.close()
+#             print("Database is ready!")
+#             break
+#         except psycopg2.OperationalError:
+#             print("Database is not ready, waiting...")
+#             time.sleep(5)
+#     # Initialize tables
+#     #create_tables()
+#     yield  # Application runs here
+#     # Shutdown logic
+#     print("Shutting down...")
+app = FastAPI()
+@app.on_event("startup")
+async def startup_event():
+    create_tables()
 
-app = FastAPI(title="user_service")
+
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 # Endpoint pour créer un utilisateur
 @app.post("/users/", response_model=UserResponse)

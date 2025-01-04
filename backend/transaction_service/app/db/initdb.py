@@ -1,10 +1,13 @@
-from db.session import engine
-from db.base import Base
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from app.db.session import engine
+from app.db.base import Base
 
 def create_tables():
-    """Créer les tables dans la base de données."""
+    from app.db.base import Base
     Base.metadata.create_all(bind=engine)
-    print("Tables créées dans la base de données.")
 
 if __name__ == "__main__":
     create_tables()

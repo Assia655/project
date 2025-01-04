@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: assiadoc/backend-api_gateway:latest
+        ports:
+        - containerPort: 8005
+        env:
+        - name: USER_SERVICE_URL
+          value: "http://user_service:8004"  # Adresse du User Service
+        - name: TRANSACTION_SERVICE_URL
+          value: "http://transaction_service:8003"
+        - name: PRICE_SERVICE_URL
+          value: "http://price_service:8002"  # Adresse du Transaction Service
+        # - name: BLOCKCHAIN_SERVICE_URL
+        #   value: "http://blockchain-service:8001"  # Adresse du Blockchain Service

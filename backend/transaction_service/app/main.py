@@ -1,9 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
+import time 
+import psycopg2
 from app.schemas.announcement import AnnouncementCreate, AnnouncementResponse, AnnouncementUpdate
 from app.schemas.transaction import TransactionCreate
 from app.utils.price_service_api import get_price
+from app.db.initdb import create_tables
 from app.services.announcement import (
     create_announcement,
     get_active_announcements,
@@ -16,8 +19,18 @@ from app.services.transaction import (
     get_transaction_by_id,
 )
 
-# Initialisation de l'application FastAPI
-app = FastAPI(title="Transaction Service API")
+app = FastAPI()
+@app.on_event("startup")
+async def startup_event():
+    create_tables()
+
+
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
 
 # --- Announcements Endpoints ---
 @app.post("/announcements")
