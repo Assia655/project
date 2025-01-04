@@ -1,0 +1,56 @@
+<!-- <div class="historique-container">
+    <h2>Historique des Émissions de Carbone</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Prix (EUR)</th>
+          <th scope="col">Changement (%)</th>
+          <th scope="col">Prix en ETH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emission of carbonEmissions">
+          <td>{{ emission.date }}</td>
+          <td>{{ emission.price | number:'1.2-2' }}</td>
+          <td>{{ emission.change_percent }}</td>
+          <td>{{ emission.price_eth | number:'1.4-4' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div> -->
+
+  
+  <div class="chart-container">
+    <div class="filter-container">
+    <label for="time-filter">Filtrer par période :</label>
+    <select id="time-filter" (change)="filterByTime($event)">
+    >
+      <option value="7">1 Semaine</option>
+      <option value="30">1 Mois</option>
+      <option value="all">Tout</option>
+    </select>
+  </div>
+  
+
+  <div class="filter-container">
+    <button (click)="filterData('USD')">Afficher le prix en EUR</button>
+    <button (click)="filterData('ETH')">Afficher le prix en ETH</button>
+  </div>
+  
+  <div class="chart">
+    <ngx-charts-line-chart
+    [scheme]="chartOptions.colorScheme"
+    [results]="single"
+    [xAxis]="true"
+    [yAxis]="true"
+    [autoScale]="true"
+    [legend]="true"
+    [showGridLines]="chartOptions.showGridLines"
+  >
+  </ngx-charts-line-chart>
+</div>
+  </div>
+  
+  
