@@ -49,18 +49,18 @@ jobs:
       # Étape 5 : Appliquer les fichiers Kubernetes pour déployer les microservices
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f ./kubernetes/user-service-deployment.yaml
-          kubectl apply -f ./kubernetes/user-service-service.yaml
-          kubectl apply -f ./kubernetes/transaction-service-deployment.yaml
-          kubectl apply -f ./kubernetes/transaction-service-service.yaml
-          kubectl apply -f ./kubernetes/price-service-deployment.yaml
-          kubectl apply -f ./kubernetes/price-service-service.yaml
-          kubectl apply -f ./kubernetes/api-gateway-deployment.yaml
-          kubectl apply -f ./kubernetes/api-gateway-service.yaml
-          kubectl apply -f ./kubernetes/kafka-deployment.yaml
-          kubectl apply -f ./kubernetes/kafka-service.yaml
-          kubectl apply -f ./kubernetes/zookeeper-deployment.yaml
-          kubectl apply -f ./kubernetes/zookeeper-service.yaml
+          kubectl apply -f ./backend/kubernetes/user-service-deployment.yml
+          kubectl apply -f ./backend/kubernetes/user-service.yml
+          kubectl apply -f ./backend/kubernetes/transaction-service-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/transaction-service-service.yaml
+          kubectl apply -f ./backend/kubernetes/price-service-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/price-service-service.yaml
+          kubectl apply -f ./backend/kubernetes/api-gateway-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/api-gateway-service.yaml
+          kubectl apply -f ./backend/kubernetes/kafka-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/kafka-service.yaml
+          kubectl apply -f ./backend/kubernetes/zookeeper-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/zookeeper-service.yaml
 
       # Étape 6 : Vérifier l'état des déploiements
       - name: Verify Rollout Status for All Services
