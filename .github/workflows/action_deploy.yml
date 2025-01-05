@@ -22,22 +22,22 @@ jobs:
       # Étape 3 : Construire et pousser les images Docker pour chaque microservice
       - name: Build and Push User Service
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2 ./user_service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2 ./backend/user_service
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2
 
       - name: Build and Push Transaction Service
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1 ./transaction_service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1 ./backend/transaction_service
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1
 
       - name: Build and Push Price Service
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1 ./price_service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1 ./backend/price_service
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1
 
       - name: Build and Push API Gateway
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest ./api-gateway
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest ./backend/api-gateway
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest
 
       # Étape 4 : Configurer kubectl avec kubeconfig
