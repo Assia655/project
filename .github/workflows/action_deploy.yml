@@ -40,11 +40,23 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest ./backend/api-gateway
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest
 
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+         version: 'v1.30.5'
+
       # Étape 4 : Configurer kubectl avec kubeconfig
-      - name: Set up kubectl with kubeconfig
+      - name: Configure kubeconfig
         run: |
-          mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Validate Kubernetes Connection
+        run: |
+           kubectl cluster-info
+           kubectl get nodes
+
+    
 
       # Étape 5 : Appliquer les fichiers Kubernetes pour déployer les microservices
       - name: Deploy to Kubernetes
