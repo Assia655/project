@@ -48,8 +48,10 @@ jobs:
       # Étape 4 : Configurer kubectl avec kubeconfig
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
+           mkdir -p ~/.kube  # Créer le répertoire ~/.kube s'il n'existe pas
+           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+           chmod 600 ~/.kube/config
+
 
       - name: Validate Kubernetes Connection
         run: |
