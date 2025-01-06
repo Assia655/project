@@ -3,7 +3,7 @@ name: CI/CD Pipeline with KinD
 on:
   push:
     branches:
-      - main  # Exécuter le pipeline pour les pushes dans la branche main.
+      - main
 
 jobs:
   build-push-deploy:
@@ -61,14 +61,28 @@ jobs:
       # Étape 7 : Déployer les fichiers YAML dans le cluster KinD
       - name: Deploy to KinD
         run: |
+          # Déploiement des bases de données
+          kubectl apply -f ./backend/kubernetes/price-db-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/price-db-service.yaml
+          kubectl apply -f ./backend/kubernetes/price-db-pvc.yaml
+          kubectl apply -f ./backend/kubernetes/transaction-db-deployment.yaml
+          kubectl apply -f ./backend/kubernetes/transaction-db-service.yaml
+          kubectl apply -f ./backend/kubernetes/transaction-db-pvc.yaml
+          kubectl apply -f ./backend/kubernetes/user-db-deployment.yml
+          kubectl apply -f ./backend/kubernetes/user-db-service.yml
+          kubectl apply -f ./backend/kubernetes/user-db-pvc.yaml
+
+          # Déploiement des microservices
           kubectl apply -f ./backend/kubernetes/user-service-deployment.yml
-          kubectl apply -f ./backend/kubernetes/user-service-service.yml
+          kubectl apply -f ./backend/kubernetes/user-service.yml
           kubectl apply -f ./backend/kubernetes/transaction-service-deployment.yaml
           kubectl apply -f ./backend/kubernetes/transaction-service-service.yaml
           kubectl apply -f ./backend/kubernetes/price-service-deployment.yaml
           kubectl apply -f ./backend/kubernetes/price-service-service.yaml
           kubectl apply -f ./backend/kubernetes/api-gateway-deployment.yaml
           kubectl apply -f ./backend/kubernetes/api-gateway-service.yaml
+
+          # Déploiement de Kafka et Zookeeper
           kubectl apply -f ./backend/kubernetes/kafka-deployment.yaml
           kubectl apply -f ./backend/kubernetes/kafka-service.yaml
           kubectl apply -f ./backend/kubernetes/zookeeper-deployment.yaml
@@ -88,7 +102,7 @@ jobs:
 
       # Étape 10 : Rollback automatique en cas d'échec
       - name: Rollback on Failure
-        if: failure()  # Exécute cette étape uniquement si une étape précédente échoue
+        if: failure()
         run: |
           kubectl rollout undo deployment/user-service
           kubectl rollout undo deployment/transaction-service
