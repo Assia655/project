@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline with KinD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-push-deploy:
-    name: Build, Push to Docker Hub, and Deploy to Kubernetes
+    name: Build, Push, and Deploy with KinD
     runs-on: ubuntu-latest
 
     steps:
@@ -15,56 +15,54 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Étape 2 : Se connecter à Docker Hub
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      # Étape 2 : Installer Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
-      # Étape 3 : Construire et pousser les images Docker pour chaque microservice
-      - name: Build and Push User Service
+      # Étape 3 : Installer KinD
+      - name: Install KinD
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2 ./backend/user_service
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.26.0/kind-linux-amd64
+          chmod +x ./kind
+          mv ./kind /usr/local/bin/kind
 
-      - name: Build and Push Transaction Service
+      # Étape 4 : Créer un cluster KinD
+      - name: Create KinD Cluster
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1 ./backend/transaction_service
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1
+          kind create cluster --name my-py-cluster
 
-      - name: Build and Push Price Service
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1 ./backend/price_service
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1
-
-      - name: Build and Push API Gateway
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest ./backend/api-gateway
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest
-
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-         version: 'v1.30.5'
-
-      # Étape 4 : Configurer kubectl avec kubeconfig
-      - name: Configure kubeconfig
-        run: |
-           mkdir -p ~/.kube  # Créer le répertoire ~/.kube s'il n'existe pas
-           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-           chmod 600 ~/.kube/config
-
-
+      # Étape 5 : Vérifier que le cluster KinD fonctionne
       - name: Validate Kubernetes Connection
         run: |
-           kubectl cluster-info
-           kubectl get nodes
+          kubectl cluster-info --context kind-my-py-cluster
+          kubectl get nodes
 
-    
+      # Étape 6 : Construire et charger les images Docker dans KinD
+      - name: Build and Load User Service Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2 ./backend/user_service
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/backend-user_service:v2 --name my-py-cluster
 
-      # Étape 5 : Appliquer les fichiers Kubernetes pour déployer les microservices
-      - name: Deploy to Kubernetes
+      - name: Build and Load Transaction Service Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1 ./backend/transaction_service
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/backend-transaction_service:v1 --name my-py-cluster
+
+      - name: Build and Load Price Service Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1 ./backend/price_service
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/backend-price_service:v1 --name my-py-cluster
+
+      - name: Build and Load API Gateway Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest ./backend/api-gateway
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/backend-api_gateway:latest --name my-py-cluster
+
+      # Étape 7 : Déployer les fichiers YAML dans le cluster KinD
+      - name: Deploy to KinD
         run: |
           kubectl apply -f ./backend/kubernetes/user-service-deployment.yml
-          kubectl apply -f ./backend/kubernetes/user-service.yml
+          kubectl apply -f ./backend/kubernetes/user-service-service.yml
           kubectl apply -f ./backend/kubernetes/transaction-service-deployment.yaml
           kubectl apply -f ./backend/kubernetes/transaction-service-service.yaml
           kubectl apply -f ./backend/kubernetes/price-service-deployment.yaml
@@ -76,7 +74,7 @@ jobs:
           kubectl apply -f ./backend/kubernetes/zookeeper-deployment.yaml
           kubectl apply -f ./backend/kubernetes/zookeeper-service.yaml
 
-      # Étape 6 : Vérifier l'état des déploiements
+      # Étape 8 : Vérifier l'état des déploiements
       - name: Verify Rollout Status for All Services
         run: |
           kubectl rollout status deployment/user-service
@@ -84,11 +82,11 @@ jobs:
           kubectl rollout status deployment/price-service
           kubectl rollout status deployment/api-gateway
 
-      # Étape 7 : Vérifier les Pods déployés
+      # Étape 9 : Vérifier les Pods déployés
       - name: Verify Deployed Pods
         run: kubectl get pods
 
-      # Étape 8 : Rollback automatique en cas d'échec
+      # Étape 10 : Rollback automatique en cas d'échec
       - name: Rollback on Failure
         if: failure()  # Exécute cette étape uniquement si une étape précédente échoue
         run: |
@@ -96,5 +94,6 @@ jobs:
           kubectl rollout undo deployment/transaction-service
           kubectl rollout undo deployment/price-service
           kubectl rollout undo deployment/api-gateway
+
 
 
