@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router'; // Import the Router
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [RouterModule],
+  imports: [],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-
+  constructor(private router: Router) {}
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 }

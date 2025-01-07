@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { SponsorsComponent } from "../sponsors/sponsors.component";
-import { AboutComponent } from '../about/about.component';
-import { FooterComponent } from '../footer/footer.component';
+import { AboutComponent } from "../about/about.component";
+import { ContactComponent } from "../contact/contact.component";
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, SponsorsComponent, AboutComponent, FooterComponent],
+  imports: [SponsorsComponent, AboutComponent, ContactComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

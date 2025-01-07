@@ -11,6 +11,7 @@ describe('SponsorsComponent', () => {
       imports: [SponsorsComponent]
     })
     .compileComponents();
+
     fixture = TestBed.createComponent(SponsorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
