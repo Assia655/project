@@ -1,2 +1,149 @@
-
+/* General Layout */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9fafc;
+    padding-left: 270px;
+    scroll-behavior: smooth;
+    /* Add scrolling */
+    max-height: calc(100vh - 64px); /* Set a maximum height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  /* Customize the scroll bar */
+  .dashboard-container::-webkit-scrollbar {
+    width: 10px; /* Width of the scroll bar */
+  }
+  
+  .dashboard-container::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Background color of the scroll bar track */
+  }
+  
+  .dashboard-container::-webkit-scrollbar-thumb {
+    background-color: #65cb9a; /* Scroll bar thumb color */
+    border-radius: 8px; /* Rounded corners for the scroll bar */
+    border: 2px solid #ffffff; /* Optional: Add a border around the thumb */
+  }
+  
+  /* Sales Profit Chart */
+  .sales-profit {
+    grid-column: span 2;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .sales-profit .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sales-profit h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  .sales-profit select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+  }
+  
+  /* Stats Cards */
+  .stats-cards {
+    display: flex;
+    gap: 20px;
+  }
+  .stats-cards .card {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .stats-cards .card h4 {
+    margin: 0;
+    font-size: 1em;
+    color: #555;
+  }
+  .stats-cards .card p {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #333;
+  }
+  .stats-cards .card span {
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  /* Popular Products */
+  .popular-products {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .popular-products a{
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #00ff84;
+    text-decoration: none;
+  }
+  .popular-products h3 {
+    margin: 0 0 10px 0;
+  }
+  .popular-products p {
+    margin: 0 0 20px 0;
+    color: #888;
+  }
+  .popular-products table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .popular-products th,
+  .popular-products td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .popular-products th {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Earning Reports */
+  .earning-reports {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .earning-reports h3 {
+    margin: 0 0 10px 0;
+  }
+  .earning-reports ul {
+    list-style: none;
+    padding: 0;
+  }
+  .earning-reports ul li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .earning-reports ul li p {
+    margin: 0;
+  }
+  .earning-reports ul li span {
+    color: #28a745;
+    font-weight: bold;
+  }
+  .earning-reports a {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #00ff84;
+    text-decoration: none;
+  }
   
