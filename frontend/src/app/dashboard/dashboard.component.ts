@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js/auto';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +8,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   styleUrls: ['./dashboard.component.css'],
   imports: [SidebarComponent]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   // Chart.js configuration
   chartData: ChartConfiguration['data'] = {
     labels: [], // Dynamic labels
@@ -18,7 +17,7 @@ export class DashboardComponent implements OnInit {
         label: 'Carbon Price in USD',
         data: [], // Dynamic data
         backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
-        borderColor: 'rgba(75, 192, 192, 1)', // Line color
+        borderColor: 'rgb(75, 192, 134)', // Line color
         borderWidth: 2,
         tension: 0.4
       },
@@ -26,7 +25,7 @@ export class DashboardComponent implements OnInit {
         label: 'Carbon Price in ETH',
         data: [], // Dynamic data
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        borderColor: 'rgb(45, 87, 56)',
         borderWidth: 2,
         tension: 0.4
       }
@@ -66,17 +65,26 @@ export class DashboardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.initializeChart();
-    this.updateChart();
+    // Chart initialization will be handled in ngAfterViewInit to ensure DOM is ready
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof document !== 'undefined') {
+      // Initialize chart after view is initialized and DOM is ready
+      this.initializeChart();
+      this.updateChart();
+    }
   }
 
   initializeChart(): void {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-    this.chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: this.chartData,
-      options: this.chartOptions
-    });
+    if (ctx) {
+      this.chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: this.chartData,
+        options: this.chartOptions
+      });
+    }
   }
 
   updateChart(): void {
@@ -89,7 +97,9 @@ export class DashboardComponent implements OnInit {
     this.chartData.datasets[1].data = simulatedData.ethPrices; // ETH Prices
 
     // Update the chart instance
-    this.chartInstance.update();
+    if (this.chartInstance) {
+      this.chartInstance.update();
+    }
   }
 
   getSimulatedData() {
