@@ -91,7 +91,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@ng-bootstrap/ng-bootstrap/dist/ng-bootstrap.css"
             ],
             "scripts": []
           }
