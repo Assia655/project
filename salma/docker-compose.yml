@@ -1,0 +1,165 @@
+version: "3.9"
+
+services:
+  # User Service
+  user_service:
+    build:
+      context: ./user_service
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8004"
+    environment:
+      - DB_HOST=user_db
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_NAME=user_service_db
+    depends_on:
+      - user_db
+    networks:
+      - fintech-network
+
+  user_db:
+    image: postgres:13
+    container_name: user_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=user_service_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+    networks:
+      - fintech-network
+
+  # Transaction Service
+  transaction_service:
+    build:
+      context: ./transaction_service
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8003"
+    environment:
+      - DB_HOST=transaction_db
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_NAME=transaction_service_db
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - transaction_db
+      - kafka
+    networks:
+      - fintech-network
+
+  transaction_db:
+    image: postgres:13
+    container_name: transaction_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=transaction_service_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - transaction_db_data:/var/lib/postgresql/data
+    networks:
+      - fintech-network
+
+  # Price Service
+  price_service:
+    build:
+      context: ./price_service
+      dockerfile: app/Dockerfile
+    ports:
+      - "8002:8002"
+    environment:
+      - DB_HOST=price_service_db
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_NAME=price_service_db
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - price_service_db
+      - kafka
+    networks:
+      - fintech-network
+
+  price_service_db:
+    image: postgres:13
+    container_name: price_service_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=price_service_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - price_service_db_data:/var/lib/postgresql/data
+    networks:
+      - fintech-network
+
+  # Blockchain Service
+  blockchain_service:
+    build:
+      context: ./blockchain_service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      - fintech-network
+
+  # API Gateway
+  api_gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8005"
+    depends_on:
+      - user_service
+      - transaction_service
+      - blockchain_service
+    environment:
+      - USER_SERVICE_URL=http://user_service:8004
+      - TRANSACTION_SERVICE_URL=http://transaction_service:8003
+      - BLOCKCHAIN_SERVICE_URL=http://blockchain_service:8001
+    networks:
+      - fintech-network
+
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+    ports:
+      - "9092:9092"
+    networks:
+      - fintech-network
+
+  # Zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    ports:
+      - "2181:2181"
+    networks:
+      - fintech-network
+
+networks:
+  fintech-network:
+    driver: bridge
+
+volumes:
+  user_db_data:
+  transaction_db_data:
+  price_service_db_data:
+

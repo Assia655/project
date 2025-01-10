@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: price-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: price-service
+  template:
+    metadata:
+      labels:
+        app: price-service
+    spec:
+      containers:
+      - name: price-service
+        image: assiadoc/backend-price_service:v1
+        ports:
+        - containerPort: 8002
+        env:
+        - name: DB_HOST
+          value: "price-db"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "1234"
+        - name: DB_NAME
+          value: "price_service_db"
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka:9092"

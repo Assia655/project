@@ -1,0 +1,23 @@
+requests
+pydantic>=2.0
+fastapi
+alembic
+uvicorn
+bcrypt
+python-jose[cryptography]
+sqlalchemy
+psycopg2-binary
+python-multipart
+bs4
+kafka-python==2.0.2
+
+
+# Requests library for external API calls (e.g., to User Service or market prices)
+requests==2.31.0
+
+# BeautifulSoup for web scraping (optional, for market prices)
+beautifulsoup4==4.12.2
+
+# LXML parser (optional, improves performance with BeautifulSoup)
+lxml==4.9.3
+

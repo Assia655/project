@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+requests
+
+
+
+#docker-compose up --build
