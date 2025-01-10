@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: price-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: price-db
+  template:
+    metadata:
+      labels:
+        app: price-db
+    spec:
+      containers:
+      - name: price-db
+        image: assiadoc/postgres:13
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "1234"
+        - name: POSTGRES_DB
+          value: "price_service_db"
+        volumeMounts:
+        - name: price-db-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: price-db-storage
+        persistentVolumeClaim:
+          claimName: price-db-pvc
