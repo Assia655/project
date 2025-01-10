@@ -1,4 +1,5 @@
 .toolbar {
+<<<<<<< HEAD
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,3 +55,59 @@
     color: rgb(40, 154, 87);
   }
   
+=======
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(235, 253, 244);
+  box-shadow: 0px 1px 40px rgba(91, 93, 92, 0.696);
+  position: relative;
+  z-index: 2;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 80px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: rgb(24, 66, 47);
+  border-radius: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: color 0.4s ease;
+  font-size: 12px;
+}
+.nav-links :hover{
+  color: rgb(245, 255, 249);
+  background-color: rgba(24, 66, 47, 0.615);
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toolbar-actions .login-btn{
+  background-color: rgb(24, 66, 47);
+  color: rgb(245, 255, 249);
+  border-radius: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.toolbar-actions .mode{
+  color: rgb(40, 154, 87);
+}
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1

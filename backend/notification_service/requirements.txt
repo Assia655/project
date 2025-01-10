@@ -1,0 +1,28 @@
+# Framework web
+fastapi==0.95.1
+
+# ASGI server
+uvicorn
+
+# Outils JSON et environnement
+python-dotenv==1.0.0
+
+# Gestion des SMS
+twilio==8.0.0
+
+# Test
+pytest==8.3.1
+
+# Client HTTP
+httpx==0.24.0
+
+# Logger avancé
+loguru==0.7.0
+
+# Pydantic pour les schémas
+pydantic
+
+# WebSocket (optionnel si nécessaire pour des notifications temps réel)
+websockets==14.1
+kafka-python==2.0.2
+six==1.16.0

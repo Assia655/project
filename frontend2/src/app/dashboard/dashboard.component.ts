@@ -1,13 +1,18 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js/auto';
+<<<<<<< HEAD
 import { ApiService } from '../services/api.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+=======
+import { SidebarComponent } from '../sidebar/sidebar.component';
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+<<<<<<< HEAD
   imports: [SidebarComponent, CommonModule],
   providers: [ApiService]
 })
@@ -27,12 +32,31 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         data: [],
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgb(75, 192, 134)',
+=======
+  imports: [SidebarComponent]
+})
+export class DashboardComponent implements OnInit, AfterViewInit {
+  // Chart.js configuration
+  chartData: ChartConfiguration['data'] = {
+    labels: [], // Dynamic labels
+    datasets: [
+      {
+        label: 'Carbon Price in USD',
+        data: [], // Dynamic data
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+        borderColor: 'rgb(75, 192, 134)', // Line color
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
         borderWidth: 2,
         tension: 0.4
       },
       {
+<<<<<<< HEAD
         label: 'Price in ETH',
         data: [],
+=======
+        label: 'Carbon Price in ETH',
+        data: [], // Dynamic data
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         borderColor: 'rgb(45, 87, 56)',
         borderWidth: 2,
@@ -70,6 +94,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   };
 
   chartInstance!: Chart;
+<<<<<<< HEAD
   
   activeAnnouncements: { id: number; credit_amount: Number; created_at: Date; }[] = [];
 
@@ -108,6 +133,18 @@ console.log('Current User ID from localStorage:', userId); // Vérifiez l'ID de 
 
   ngAfterViewInit(): void {
     if (typeof document !== 'undefined') {
+=======
+
+  constructor() {}
+
+  ngOnInit(): void {
+    // Chart initialization will be handled in ngAfterViewInit to ensure DOM is ready
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof document !== 'undefined') {
+      // Initialize chart after view is initialized and DOM is ready
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
       this.initializeChart();
       this.updateChart();
     }
@@ -124,6 +161,7 @@ console.log('Current User ID from localStorage:', userId); // Vérifiez l'ID de 
     }
   }
 
+<<<<<<< HEAD
 updateChart(): void {
   this.chartData.labels = this.dates.reverse();
   this.chartData.datasets[0].data = this.eurPrices.reverse();
@@ -163,3 +201,36 @@ updateChart(): void {
   }
 }
 
+=======
+  updateChart(): void {
+    // Simulate fetching data
+    const simulatedData = this.getSimulatedData();
+
+    // Update chart labels and datasets
+    this.chartData.labels = simulatedData.dates;
+    this.chartData.datasets[0].data = simulatedData.usdPrices; // USD Prices
+    this.chartData.datasets[1].data = simulatedData.ethPrices; // ETH Prices
+
+    // Update the chart instance
+    if (this.chartInstance) {
+      this.chartInstance.update();
+    }
+  }
+
+  getSimulatedData() {
+    const dates: string[] = [];
+    const usdPrices: number[] = [];
+    const ethPrices: number[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      const date = new Date();
+      date.setMinutes(date.getMinutes() - i * 10);
+      dates.unshift(date.toLocaleTimeString());
+      usdPrices.unshift(+(Math.random() * 10 + 50).toFixed(2));
+      ethPrices.unshift(+(Math.random() * 0.005 + 0.002).toFixed(4));
+    }
+
+    return { dates, usdPrices, ethPrices };
+  }
+}
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1

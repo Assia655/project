@@ -16,14 +16,20 @@ class WalletCurrency(str, Enum):
 class WalletCreate(BaseModel):
     user_id: int
     balance: float
-    currency: WalletCurrency
+    currency: WalletCurrency  
 
-class WalletResponse(WalletCreate):
+class WalletResponse(BaseModel):
     id: int
+    user_id: int
+    balance: float
+    currency: WalletCurrency  # Représente la valeur sous forme de chaîne de caractères
+    address: Optional[str] = None  # Champ adresse pour le wallet
 
     class Config:
-        from_attributes = True
-        arbitrary_types_allowed = True
+        orm_mode = True
+        use_enum_values = True
+        
+      
 
 # Schéma pour UserProfile
 class UserProfileCreate(BaseModel):
@@ -38,10 +44,9 @@ class UserProfileResponse(BaseModel):
     is_buyer: bool
 
     class Config:
-        from_attributes = True
-        arbitrary_types_allowed = True
+        orm_mode = True
 
-
+# Schéma de base pour l'utilisateur
 class UserBase(BaseModel):
     username: str
     email: EmailStr
@@ -55,15 +60,13 @@ class User(BaseModel):
     username: str
     email: str
     is_admin: bool
-    profile: Optional["UserProfileResponse"]
-    wallets: List["WalletResponse"]
+    profile: Optional[UserProfileResponse]
+    wallets: List[WalletResponse]
 
     class Config:
-        from_attributes = True
-        arbitrary_types_allowed = True  # Permet les types inconnus comme SQLAlchemy
+        orm_mode = True
 
-
-# Schéma pour la réponse
+# Schéma pour la réponse utilisateur
 class UserResponse(BaseModel):
     id: int
     username: str
@@ -72,4 +75,4 @@ class UserResponse(BaseModel):
     wallets: List[WalletResponse]
 
     class Config:
-        from_attributes = True
+        orm_mode = True

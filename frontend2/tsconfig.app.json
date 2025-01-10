@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+=======
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -11,7 +15,11 @@
   "files": [
     "src/main.ts",
     "src/main.server.ts",
+<<<<<<< HEAD
     "src/server.ts"
+=======
+    "server.ts"
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
   ],
   "include": [
     "src/**/*.d.ts"

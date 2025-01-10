@@ -1,9 +1,9 @@
 fastapi
-alembic
 uvicorn
 bcrypt
 python-jose[cryptography]
 sqlalchemy
-pydantic[email]
+pydantic
 psycopg2-binary
 python-multipart
+pydantic[email]

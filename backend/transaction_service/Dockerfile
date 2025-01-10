@@ -1,4 +1,3 @@
-
 # Étape 1 : Construire l'environnement à partir d'une image Python légère
 FROM python:3.10-slim AS base
 
