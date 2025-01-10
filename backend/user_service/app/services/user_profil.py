@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.user import UserProfile
-from app.schemas import UserProfileCreate
+from models.user import UserProfile
+from schemas import UserProfileCreate
 
 def create_user_profile_service(db: Session, profile_data: UserProfileCreate):
     profile = UserProfile(

@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
-from app.models.announcements import Announcement
-from app.schemas.announcement import AnnouncementCreate, AnnouncementUpdate
-from app.utils.price_service_api import get_price
+from models.announcements import Announcement
+from schemas.announcement import AnnouncementCreate, AnnouncementUpdate
+from utils.price_service_api import get_price
 
 def create_announcement(db: Session, announcement_data: AnnouncementCreate):
     # Récupérer le prix actuel du marché pour MCO2 en USD
-    market_price = get_price("MCO2")
+    market_price = get_price("CARBON")
     
     # Créer une annonce sans la colonne currency
     announcement = Announcement(

@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 # Enum pour Wallet
 class WalletCurrency(str, Enum):
-    USD = "USD"
+    USD = "EURO"
     ETH = "ETH"
     CARBON = "CARBON"
 

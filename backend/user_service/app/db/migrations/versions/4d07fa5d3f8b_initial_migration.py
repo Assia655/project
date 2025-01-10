@@ -43,7 +43,7 @@ def upgrade() -> None:
     op.create_table('wallets',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('balance', sa.Float(), nullable=True),
-    sa.Column('currency', sa.Enum('USD', 'ETH', 'CARBON', name='wallettype'), nullable=False),
+    sa.Column('currency', sa.Enum('EURO', 'ETH', 'CARBON', name='wallettype'), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

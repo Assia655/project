@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from app.models.transactions import Transaction, TransactionType
-from app.models.announcements import Announcement
-from app.schemas.transaction import TransactionCreate
-from app.utils.user_service_api import get_wallet_balance, update_wallet_balance
-from app.utils.price_service_api import get_price
+from models.transactions import Transaction, TransactionType
+from models.announcements import Announcement
+from schemas.transaction import TransactionCreate
+from utils.user_service_api import get_wallet_balance, update_wallet_balance
+from utils.price_service_api import get_price
 
 
 def create_transaction(db: Session, transaction_data: TransactionCreate):
@@ -11,8 +11,8 @@ def create_transaction(db: Session, transaction_data: TransactionCreate):
 
     if transaction_data.type == TransactionType.PAYMENT:
         # Vérification que la devise est USD pour les transactions PAYMENT
-        if transaction_data.currency != "USD":
-            raise ValueError("Only USD is allowed for transactions involving MCO2")
+        if transaction_data.currency != "EURO":
+            raise ValueError("Only EURO is allowed for transactions involving MCO2")
 
         # Vérifier si l'annonce existe et est active
         announcement = db.query(Announcement).filter(Announcement.id == transaction_data.announcement_id).first()
@@ -20,17 +20,17 @@ def create_transaction(db: Session, transaction_data: TransactionCreate):
             raise ValueError("Invalid or inactive announcement")
 
         # Valider les portefeuilles des utilisateurs
-        seller_balance = get_wallet_balance(announcement.seller_id, "USD")
-        buyer_balance = get_wallet_balance(transaction_data.buyer_id, "USD")
+        seller_balance = get_wallet_balance(announcement.seller_id, "EURO")
+        buyer_balance = get_wallet_balance(transaction_data.buyer_id, "EURO")
 
         if seller_balance is None:
-            raise ValueError(f"Seller with ID {announcement.seller_id} does not have a USD wallet")
+            raise ValueError(f"Seller with ID {announcement.seller_id} does not have a EURO wallet")
         if buyer_balance is None:
-            raise ValueError(f"Buyer with ID {transaction_data.buyer_id} does not have a USD wallet")
+            raise ValueError(f"Buyer with ID {transaction_data.buyer_id} does not have a EURO wallet")
 
         # Récupérer le prix du marché via le service de prix
         try:
-            market_price = get_price("MCO2")
+            market_price = get_price("ETH")
         except Exception as e:
             raise ValueError(f"Failed to fetch market price: {e}")
 
@@ -44,13 +44,13 @@ def create_transaction(db: Session, transaction_data: TransactionCreate):
             wallet_id=announcement.seller_id,
             new_balance=seller_balance + transaction_data.credit_amount,
             user_id=announcement.seller_id,
-            currency="USD"
+            currency="EURO"
         )
         update_wallet_balance(
             wallet_id=transaction_data.buyer_id,
             new_balance=buyer_balance - total_price,
             user_id=transaction_data.buyer_id,
-            currency="USD"
+            currency="EURO"
         )
 
         # Créer et enregistrer la transaction
@@ -121,3 +121,8 @@ def get_transaction_by_id(db: Session, transaction_id: int):
 def get_all_transactions(db: Session):
     """Récupérer toutes les transactions."""
     return db.query(Transaction).all()
+
+
+def get_transactions_by_user(db: Session, seller_id: int):
+    """Récupérer les transactions pour un utilisateur spécifique"""
+    return db.query(Transaction).filter(Transaction.seller_id == seller_id).all()

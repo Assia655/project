@@ -1,0 +1,66 @@
+<app-sidebar></app-sidebar>
+<div class="dashboard-container">
+    <!-- Sales Profit Chart -->
+    <div class="sales-profit">
+      <div class="header">
+        <h3>Ecocoin market</h3>
+      </div>
+      <div class="chart">
+        <canvas id="salesChart" style="width: 50%; height: 400px;"></canvas>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+      <div class="card followers">
+        <div>
+          <h4>ETH</h4>
+          <p>{{ ethBalance }}</p> <!-- Display ETH wallet balance -->
+        </div>
+      </div>
+      <div class="card income">
+        <div>
+          <h4>USD</h4>
+          <p>{{ eurBalance }}</p> <!-- Display USD wallet balance -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Products -->
+    <div class="popular-products">
+      <h3>Market updates</h3>
+      <div class="active-announcements">
+        <h3>Active Announcements</h3>
+        <ul>
+          <li *ngFor="let announcement of activeAnnouncements">
+            <h4>{{ announcement.created_at }}</h4>
+            <p>{{ announcement.credit_amount }}</p>
+          </li>
+        </ul>
+      </div>
+      
+
+    <!-- Earning Reports -->
+    <div class="earning-reports">
+      <h3>Latest Transactions</h3>
+      <ul>
+        <li>
+          <p>Transaction 1</p>
+          <span>-15.465 USD</span>
+        </li>
+        <li>
+            <p>Transaction 2</p>
+            <span>-15.465 USD</span>
+        </li>
+        <li>
+            <p>Transaction 3</p>
+            <span>-0.465 ETH</span>
+        </li>
+        <li>
+            <p>Transaction 4</p>
+            <span>-15.465 USD</span>
+        </li>
+      </ul>
+      <a href="#">View all</a>
+    </div>
+</div>
