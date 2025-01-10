@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 # Étape 1 : Construire l'environnement à partir d'une image Python légère
+=======
+>>>>>>> Stashed changes
 FROM python:3.10-slim AS base
 
 # Définir le répertoire de travail à l'intérieur du conteneur
@@ -17,5 +20,9 @@ COPY . .
 EXPOSE 8003
 
 # Définir la commande de démarrage pour Uvicorn
+<<<<<<< Updated upstream
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
 #CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8003"]
+=======
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
+>>>>>>> Stashed changes
