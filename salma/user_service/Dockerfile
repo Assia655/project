@@ -18,8 +18,3 @@ EXPOSE 8004
 # Définir la commande de démarrage pour Uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
 #CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8004"]
-
-
-
-
-# Copier le fichier alembic.ini depuis l'hôte vers le contene

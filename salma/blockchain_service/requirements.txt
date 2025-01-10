@@ -2,3 +2,11 @@ requests
 fastapi
 uvicorn
 sqlalchemy
+web3
+python-jose[cryptography]
+python-multipart
+psycopg2-binary
+pytest
+httpx
+pydantic
+pyjwt
