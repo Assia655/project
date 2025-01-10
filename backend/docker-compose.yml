@@ -161,9 +161,6 @@ networks:
 volumes:
   user_db_data:
   transaction_db_data:
-<<<<<<< HEAD
   price_service_db_data:
-=======
-  price_service_db_data:
-#hi changes
->>>>>>> 946826686aaa683e610d177faa214ae6d94a4c96
+
+
