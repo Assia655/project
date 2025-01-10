@@ -1,15 +1,36 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-import psycopg2
-import time  
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from app.db.session import get_db
-from app.schemas import UserCreate, User, UserProfileCreate, UserProfileResponse, UserResponse, WalletCreate, WalletResponse
-from app.services.user import authenticate_user, create_user, get_user_by_id
-from app.utils.jwt import create_access_token, verify_access_token
-from app.models.user import User
-from contextlib import asynccontextmanager
-from app.db.initdb import create_tables
+from db.session import get_db
+from schemas import (
+    UserCreate,
+    UserResponse,
+    WalletCreate,
+    WalletResponse,
+    UserProfileCreate,
+    UserProfileResponse,
+)
+from services.user import (
+    authenticate_user,
+    create_user,
+    get_user_by_username,
+)
+from services.wallet import (
+    create_wallet_service,
+    get_user_wallet_balance,
+    get_wallets_by_user_service,
+    get_wallets_by_user_service_currency,
+    update_wallet_balance_service,
+    delete_wallet_service,
+)
+from services.user_profil import (
+    create_user_profile_service,
+    get_user_profile_service,
+    update_user_profile_service,
+    delete_user_profile_service,
+)
+from utils.jwt import create_access_token, verify_access_token
+from db.initdb import create_tables
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 # @asynccontextmanager
@@ -38,71 +59,83 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 #     # Shutdown logic
 #     print("Shutting down...")
 app = FastAPI()
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Ajout du middleware CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autorise toutes les origines (ou spécifiez l'origine exacte comme 'http://localhost:4200')
+    allow_credentials=True,
+    allow_methods=["*"],  # Autorise toutes les méthodes HTTP (GET, POST, etc.)
+    allow_headers=["*"],  # Autorise tous les en-têtes
+)
+
+
 @app.on_event("startup")
 async def startup_event():
     create_tables()
 
 
-
-
+# ====================================================
+# Endpoint pour vérifier l'état de santé du service
+# ====================================================
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
 
-# Endpoint pour créer un utilisateur
-@app.post("/users/", response_model=UserResponse)
-def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
-    """Créer un utilisateur directement."""
-    return create_user(db, user)
-
-# Endpoint pour récupérer un utilisateur par ID
-@app.get("/users/{user_id}", response_model=UserResponse)
-def get_user_endpoint(user_id: int, db: Session = Depends(get_db)):
-    """Récupérer un utilisateur par son ID."""
-    user = get_user_by_id(db, user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-
-# Endpoint pour l'inscription (register)
-@app.post("/register", response_model=UserResponse)
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    """Créer un nouvel utilisateur."""
-    return create_user(db, user)
-
-# Endpoint pour la connexion (login)
+# ====================================================
+# Authentification & gestion des utilisateurs
+# ====================================================
 @app.post("/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     access_token = create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer","user_id":user.id}
 
-# Endpoint protégé pour vérifier l'utilisateur connecté
-@app.get("/users/me")
-def read_users_me(token: str = Depends(oauth2_scheme)):
+
+@app.get("/users/me", response_model=UserResponse)
+def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    """Vérifier et retourner l'utilisateur connecté via son token."""
     payload = verify_access_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
-    return {"username": payload["sub"]}
+    
+    username = payload.get("sub")
+    user = get_user_by_username(db, username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
-# ENDPOINTS POUR LES WALLETS
-# ===========================
-from app.services.wallet import (
-    create_wallet_service,
-    get_wallets_by_user_service,
-    update_wallet_balance_service,
-    delete_wallet_service,
-)
 
+@app.post("/users/", response_model=UserResponse)
+def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
+    """Créer un utilisateur et ses wallets par défaut."""
+    new_user = create_user(db, user)
+    # Création automatique des wallets pour l'utilisateur (USD, ETH, CARBON)
+    return new_user
+
+# ====================================================
+# Gestion des wallets
+# ====================================================
 @app.post("/wallets/", response_model=WalletResponse)
 def create_wallet(wallet: WalletCreate, db: Session = Depends(get_db)):
     return create_wallet_service(db, wallet)
 
 @app.get("/wallets/{user_id}", response_model=list[WalletResponse])
 def get_wallets(user_id: int, db: Session = Depends(get_db)):
-    return get_wallets_by_user_service(db, user_id)
+    wallets = get_wallets_by_user_service(db, user_id)
+    return [WalletResponse.from_orm(wallet) for wallet in wallets]
+
+@app.get("/wallets/{user_id}/{currency}", response_model=list[WalletResponse])
+def get_wallets_currency(user_id: int,currency:str, db: Session = Depends(get_db)):
+    wallets = get_wallets_by_user_service_currency(db, user_id, currency)
+    return [WalletResponse.from_orm(wallet) for wallet in wallets]
+
 
 @app.put("/wallets/{wallet_id}", response_model=WalletResponse)
 def update_wallet_balance(wallet_id: int, balance: float, db: Session = Depends(get_db)):
@@ -111,6 +144,14 @@ def update_wallet_balance(wallet_id: int, balance: float, db: Session = Depends(
         raise HTTPException(status_code=404, detail="Wallet not found")
     return wallet
 
+@app.get("/wallet/balance/{user_id}/{currency}")
+async def get_wallet_balance(user_id: int, currency: str, db: Session = Depends(get_db)):
+    balance = get_user_wallet_balance(db, user_id, currency)
+    if balance is not None:
+        return {"user_id": user_id, "currency": currency, "balance": balance}
+    raise HTTPException(status_code=404, detail="Wallet not found for this user and currency")
+
+
 @app.delete("/wallets/{wallet_id}")
 def delete_wallet(wallet_id: int, db: Session = Depends(get_db)):
     if not delete_wallet_service(db, wallet_id):
@@ -118,16 +159,10 @@ def delete_wallet(wallet_id: int, db: Session = Depends(get_db)):
     return {"message": "Wallet deleted successfully"}
 
 
-# ================================
-# ENDPOINTS POUR LES USER PROFILES
-# ================================
 
-from app.services.user_profil import (
-    create_user_profile_service,
-    get_user_profile_service,
-    update_user_profile_service,
-    delete_user_profile_service,
-)
+# ====================================================
+# Gestion des profils utilisateurs
+# ====================================================
 @app.post("/user_profiles/", response_model=UserProfileResponse)
 def create_user_profile(profile: UserProfileCreate, db: Session = Depends(get_db)):
     return create_user_profile_service(db, profile)

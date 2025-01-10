@@ -1,0 +1,36 @@
+<!-- users_list.component.html -->
+<app-sidebar></app-sidebar>
+<div class="table-container">
+    <h3>Users List</h3>
+    <p>List of the companies</p>
+    
+    <!-- Table -->
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Company Logo</th>
+          <th>Company Name</th>
+          <th>Email Address</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+          <td><img [src]="user.logo" alt="Company Logo" class="company-logo"></td>
+          <td>{{ user.companyName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td class="actions">
+            <button class="show-button">Show</button>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Pagination controls -->
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+  

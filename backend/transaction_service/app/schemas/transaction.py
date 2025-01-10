@@ -40,7 +40,7 @@ class TransactionCreate(BaseModel):
                     "buyer_id": 3,
                     "announcement_id": 5,
                     "credit_amount": 100.0,
-                    "currency": "USD",
+                    "currency": "EURO",
                     "type": "payment"
                 },
                 "virement": {
@@ -77,7 +77,7 @@ class TransactionResponse(BaseModel):
                 "credit_amount": 100.0,
                 "price_at_transaction": 0.372777,
                 "total_price": 37.28,
-                "currency": "USD",
+                "currency": "EURO",
                 "type": "payment",
                 "transaction_date": "2025-01-01T12:00:00",
                 "status": "completed"

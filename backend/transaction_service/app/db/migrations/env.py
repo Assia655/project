@@ -4,13 +4,13 @@ from sqlalchemy import MetaData
 from alembic import context
 
 # Importez vos modèles ici
-from app.models.transactions import Transaction
-from app.models.announcements import Announcement
-from app.db.base import Base
+from models.transactions import Transaction
+from models.announcements import Announcement
+from db.base import Base
 
 # Configuration Alembic
 config = context.config
-config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@transaction_db:5432/transaction_service_db')
+config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@localhost:5431/transaction_service_db')
 
 
 # Lecture de la configuration de logging

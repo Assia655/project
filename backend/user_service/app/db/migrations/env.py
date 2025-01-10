@@ -3,12 +3,12 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from app.db.base import Base
-from app.models.user import User  # Import explicite des modèles
-from app.models.wallet import Wallet  # Import explicite des modèles
+# from app.models.user import User  # Import explicite des modèles
+# from app.models.wallet import Wallet  # Import explicite des modèles
 
 # Configurer Alembic
 config = context.config
-config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@user_db:5432/user_service_db')
+config.set_main_option('sqlalchemy.url', 'postgresql://postgres:1234@localhost:5431/carbonmarket')
 
 # Configurer les logs
 if config.config_file_name is not None:

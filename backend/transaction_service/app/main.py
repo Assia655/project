@@ -1,22 +1,25 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import get_db
+from services import transaction
+from models.transactions import Transaction
+from db.session import get_db
 import time 
 import psycopg2
-from app.schemas.announcement import AnnouncementCreate, AnnouncementResponse, AnnouncementUpdate
-from app.schemas.transaction import TransactionCreate
-from app.utils.price_service_api import get_price
-from app.db.initdb import create_tables
-from app.services.announcement import (
+from schemas.announcement import AnnouncementCreate, AnnouncementResponse, AnnouncementUpdate
+from schemas.transaction import TransactionCreate
+from utils.price_service_api import get_price
+from db.initdb import create_tables
+from services.announcement import (
     create_announcement,
     get_active_announcements,
     update_announcement,
     delete_announcement,
 )
-from app.services.transaction import (
+from services.transaction import (
     create_transaction,
     get_all_transactions,
     get_transaction_by_id,
+    get_transactions_by_user,
 )
 
 app = FastAPI()
@@ -68,3 +71,25 @@ def fetch_transaction_by_id(transaction_id: int, db: Session = Depends(get_db)):
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
     return transaction
+
+# Endpoint pour récupérer les transactions d'un utilisateur
+@app.get("/transactions_by/{seller_id}")
+def get_transactions_for_user(seller_id: int, db: Session = Depends(get_db)):
+    """Récupérer les transactions pour un utilisateur spécifique"""
+    transactions = get_transactions_by_user(db, seller_id)  # Vous devez implémenter cette fonction dans les services
+    if not transactions:
+        raise HTTPException(status_code=404, detail="Transactions not found")
+    return transactions
+
+
+# @app.get("/transactions/my")
+# def get_my_transactions(user_id: int = Depends(get_user_id_from_token), db: Session = Depends(get_db)):
+#     # Récupérer les transactions où l'utilisateur est soit buyer_id, soit seller_id
+#     transactions = db.query(transaction).filter(
+#         (Transaction.buyer_id == user_id) | (Transaction.seller_id == user_id)
+#     ).all()
+    
+#     if not transactions:
+#         raise HTTPException(status_code=404, detail="No transactions found")
+    
+#     return transactions
