@@ -3,20 +3,22 @@ from app.utils.transaction_helper import (
     register_user,
     link_wallet,
     pay_for_carbon_credits,
-    stake_carbon,
-    approve_token
+    stake_carbon
 )
 
-def register_user_service(user_address: str):
+async def register_user_service(user_address: str):
+    """Service pour enregistrer un utilisateur sur la blockchain."""
     try:
-        receipt = register_user(user_address)
+        receipt = await register_user(user_address)  
+        if not receipt:
+            raise Exception("Transaction receipt is None")
         return {"status": "success", "transaction_hash": receipt.transactionHash.hex()}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
 
-def link_wallet_service(user_address: str, wallet_address: str):
+async def link_wallet_service(user_address: str, wallet_address: str):
     try:
-        receipt = link_wallet(user_address, wallet_address)
+        receipt = await link_wallet(user_address, wallet_address)  
         return {"status": "success", "transaction_hash": receipt.transactionHash.hex()}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to link wallet: {str(e)}")

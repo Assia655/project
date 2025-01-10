@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from app.db.base import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -12,7 +13,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     is_admin = Column(Boolean, default=False)
     profile = relationship("UserProfile", back_populates="user", uselist=False)
-    wallets = relationship("Wallet", back_populates="owner", lazy="joined")  
+    wallets = relationship("Wallet", back_populates="owner", lazy="joined")  # Utilise "Wallet" comme chaîne 
 
 class UserProfile(Base):
     __tablename__ = "user_profiles"

@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-bcrypt
-python-jose[cryptography]
-sqlalchemy
-pydantic
-psycopg2-binary
-python-multipart
-pydantic[email]

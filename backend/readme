@@ -1,73 +1,186 @@
-                 +-------------------+
-                 |     API Gateway   |
-                 | (OAuth2/JWT Auth) |
-                 +---------+---------+
-                           |
-     +---------------------+---------------------+
-     |                                           |
-+------------+                            +---------------+
-| User       |                            | Blockchain     |
-| Service    |                            | Service        |
-| (JWT, DB)  |                            | (Smart Contract|
-+------------+                            | Interaction)   |
-     |                                    +---------------+
-     |
-+-----------------+
-| Transaction     |
-| Service         |
-| (Payments, virement) |
-+-----------------+
 
-Services Définis :
+#Fintech-Platform (Carbon MCO2 Token)
 
-Accéder aux services :
-API Gateway : http://localhost:8005
-User Service : http://localhost:8004/users
-Transaction Service : http://localhost:8003/transactions
-Blockchain Service : http://localhost:8001/blockchain
-Price service : http://localhost:8002/prices
+##Overview
 
-(bach n activer envi : 
-.\venv\Scripts\activate )
+The Fintech Platform is a microservice-based architecture designed to facilitate transactions using Carbon MCO2 tokens. This platform enables users to manage wallets, perform transactions, track market prices, and interact with blockchain-based services.
 
+This document outlines the backend architecture, microservices, databases, endpoints, and key processes involved.
 
-├── Transaction Service(service 2)
-│   ├── Base de données : transaction_service_db
-│   └── Services :
-│       ├── createTransaction()
-│       ├── getTransaction()
-│       └── updateTransaction()
+##Microservices Overview
 
+###1. API Gateway
 
+Purpose: Acts as the entry point for all client requests, routing them to the appropriate microservices.
 
-│
-├── Blockchain Service
-│   ├── Base de données : blockchain_service_db
-│   └── Services :
-│       ├── createBlockchainTransaction()
-│       ├── interactWithSmartContract()
-│       └── verifyBlockchainTransaction()
+Technologies: FastAPI
 
+Responsibilities:
 
-3. Diagramme de Classe pour le Microservice de Transactions Blockchain
-BlockchainTransaction: Représente les transactions sur la blockchain.
-SmartContract: Gère les interactions avec les smart contracts.
-MetaMaskWallet: Intègre MetaMask pour les interactions utilisateur.
-+----------------------+        +-----------------+
-|  BlockchainTransaction|        | SmartContract   |
-+----------------------+        +-----------------+
-| txHash: str          |        | contractAddress: str |
-| amount: float        |        | invokeContract()     |
-| tokenType: str       |        | stakeTokens()        |
-+----------------------+        | withdrawTokens()     |
-                                +-----------------+
-                                     |
-                                     v
-                               +-------------------+
-                               | MetaMaskWallet    |
-                               +-------------------+
-                               | connectWallet()   |
-                               | sendTransaction() |
-                               +-------------------+
+Request routing
 
--
+Authentication and authorization (via JWT/OAuth2)
+
+Centralized error handling
+
+###2. User Service
+
+Purpose: Manages user accounts and wallets.
+
+Database: user_service_db (PostgreSQL)
+
+Endpoints:
+
+GET /users/{id}: Retrieve user details.
+
+POST /users: Create a new user.
+
+GET /users/{id}/wallets: Retrieve all wallets for a user.
+
+PUT /users/{id}/wallets/{wallet_id}: Update wallet balance.
+
+#3. Transaction Service
+
+Purpose: Handles transactions, including payments, transfers, and credit purchases.
+
+Database: transaction_service_db (PostgreSQL)
+
+Endpoints:
+
+POST /transactions: Create a new transaction.
+
+GET /transactions: Retrieve all transactions.
+
+GET /transactions/{id}: Retrieve transaction details by ID.
+
+#4. Price Service
+
+Purpose: Tracks market prices for MCO2 tokens and related currencies.
+
+Database: price_service_db (PostgreSQL)
+
+Endpoints:
+
+GET /prices: Retrieve the latest market prices.
+
+POST /prices: Add new market price data (via scraping or external API).
+
+#5. Blockchain Service
+
+Purpose: Manages blockchain-based transactions and token-related activities.
+
+Database: None (interacts directly with the blockchain network).
+
+Endpoints:
+
+POST /blockchain/transactions: Create a blockchain transaction.
+
+GET /blockchain/transactions/{id}: Retrieve blockchain transaction details.
+
+Databases
+
+1. user_service_db
+
+Tables:
+
+users: Stores user information (ID, username, email).
+
+wallets: Stores wallet balances and associated currencies.
+
+2. transaction_service_db
+
+Tables:
+
+transactions: Records transaction details (seller, buyer, amount, type).
+
+announcements: Manages user listings for MCO2 token sales.
+
+3. price_service_db
+
+Tables:
+
+market_prices: Stores historical and current market prices for MCO2 and other currencies.
+
+Steps to Deploy and Run the Platform
+
+Install Required Tools:
+
+Docker and Docker Compose
+
+PostgreSQL
+
+Python (with venv for virtual environments)
+
+Setup Databases:
+
+Create databases: user_service_db, transaction_service_db, price_service_db.
+
+Apply migrations for each microservice:
+
+alembic upgrade head
+
+Build and Run Microservices:
+
+Use Docker Compose to build and start all services:
+
+docker-compose up --build
+
+Start Kafka and Zookeeper (for asynchronous messaging):
+
+Start Zookeeper:
+
+zookeeper-server-start.sh config/zookeeper.properties
+
+Start Kafka:
+
+kafka-server-start.sh config/server.properties
+
+Verify Services:
+
+Use tools like Postman to test the endpoints of each microservice.
+
+Ensure API Gateway routes requests correctly.
+
+Key Processes
+
+1. User Registration
+
+User sends a POST /users request to the User Service.
+
+User Service validates and stores user data in user_service_db.
+
+2. Wallet Management
+
+User retrieves wallet details via GET /users/{id}/wallets.
+
+Wallet balance updates through PUT /users/{id}/wallets/{wallet_id}.
+
+3. Transaction Workflow
+
+Buyer sends a POST /transactions request to the Transaction Service.
+
+Transaction Service validates wallets (via REST API to User Service).
+
+Transaction details are stored in transaction_service_db.
+
+Kafka produces an event to notify the Blockchain Service if applicable.
+
+4. Market Price Updates
+
+Price Service scrapes data from sources like CoinGecko.
+
+Prices are stored in price_service_db for historical tracking.
+
+5. Blockchain Interaction
+
+Transaction Service sends data to Blockchain Service via Kafka.
+
+Blockchain Service processes the transaction on the blockchain network.
+
+Future Enhancements
+
+Implement real-time price updates via WebSocket.
+
+Add user notifications for completed transactions.
+
+Expand currency support for transactions.

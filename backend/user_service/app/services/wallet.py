@@ -1,18 +1,23 @@
 from sqlalchemy.orm import Session
 from app.models.wallet import Wallet
-from app.schemas import WalletCreate
+from app.schemas import WalletCreate, WalletCurrency
 
-def create_wallet_service(db: Session, wallet_data: WalletCreate):
-    """Créer un wallet pour un utilisateur."""
-    wallet = Wallet(
-        user_id=wallet_data.user_id,
-        balance=wallet_data.balance,
-        currency=wallet_data.currency
+def create_wallet_service(db: Session, wallet_create: WalletCreate):
+    db_wallet = Wallet(
+        user_id=wallet_create.user_id,
+        balance=wallet_create.balance,
+        currency=WalletCurrency(wallet_create.currency) 
     )
-    db.add(wallet)
+
+    if db_wallet.currency == "ETH": 
+        db_wallet.address = "adresse_unique_pour_ethereum"  
+    else:
+        db_wallet.address = None  # Pour USD et CARBON
+    db.add(db_wallet)
     db.commit()
-    db.refresh(wallet)
-    return wallet
+    db.refresh(db_wallet)
+
+    return db_wallet
 
 def get_wallets_by_user_service(db: Session, user_id: int):
     """Récupérer les wallets d'un utilisateur."""

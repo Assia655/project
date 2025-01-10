@@ -1,10 +1,17 @@
-from app.db.session import engine
-from app.db.base import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import os
 
-def create_tables():
-    """Créer les tables dans la base de données."""
-    Base.metadata.create_all(bind=engine)
-    print("Tables créées dans la base de données.")
+# URL de la base de données
+DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:1234@localhost:5432/price_service_db")
 
-if __name__ == "__main__":
-    create_tables()
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
