@@ -83,4 +83,4 @@ class TransactionResponse(BaseModel):
                 "status": "completed"
             }
         }
-       
+        from_attributes = True

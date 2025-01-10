@@ -38,7 +38,6 @@ def get_latest_price(db: Session):
     )
 
 
-
 def get_all_prices(db: Session):
     
     scrape_and_insert_data()

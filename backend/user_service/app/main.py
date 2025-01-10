@@ -1,8 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+<<<<<<< HEAD
 from db.session import get_db
 from schemas import (
+=======
+from app.db.session import get_db
+from app.schemas import (
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
     UserCreate,
     UserResponse,
     WalletCreate,
@@ -10,11 +15,16 @@ from schemas import (
     UserProfileCreate,
     UserProfileResponse,
 )
+<<<<<<< HEAD
 from services.user import (
+=======
+from app.services.user import (
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
     authenticate_user,
     create_user,
     get_user_by_username,
 )
+<<<<<<< HEAD
 from services.wallet import (
     create_wallet_service,
     get_user_wallet_balance,
@@ -24,13 +34,27 @@ from services.wallet import (
     delete_wallet_service,
 )
 from services.user_profil import (
+=======
+from app.services.wallet import (
+    create_wallet_service,
+    get_wallets_by_user_service,
+    update_wallet_balance_service,
+    delete_wallet_service,
+)
+from app.services.user_profil import (
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
     create_user_profile_service,
     get_user_profile_service,
     update_user_profile_service,
     delete_user_profile_service,
 )
+<<<<<<< HEAD
 from utils.jwt import create_access_token, verify_access_token
 from db.initdb import create_tables
+=======
+from app.utils.jwt import create_access_token, verify_access_token
+from app.db.initdb import create_tables
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 # @asynccontextmanager
@@ -130,12 +154,15 @@ def create_wallet(wallet: WalletCreate, db: Session = Depends(get_db)):
 def get_wallets(user_id: int, db: Session = Depends(get_db)):
     wallets = get_wallets_by_user_service(db, user_id)
     return [WalletResponse.from_orm(wallet) for wallet in wallets]
+<<<<<<< HEAD
 
 @app.get("/wallets/{user_id}/{currency}", response_model=list[WalletResponse])
 def get_wallets_currency(user_id: int,currency:str, db: Session = Depends(get_db)):
     wallets = get_wallets_by_user_service_currency(db, user_id, currency)
     return [WalletResponse.from_orm(wallet) for wallet in wallets]
 
+=======
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 
 @app.put("/wallets/{wallet_id}", response_model=WalletResponse)
 def update_wallet_balance(wallet_id: int, balance: float, db: Session = Depends(get_db)):
@@ -158,8 +185,11 @@ def delete_wallet(wallet_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Wallet not found")
     return {"message": "Wallet deleted successfully"}
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 # ====================================================
 # Gestion des profils utilisateurs
 # ====================================================

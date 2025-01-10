@@ -1,17 +1,8 @@
 from pydantic import BaseModel
-from datetime import datetime
 
-class BlockchainTransactionCreate(BaseModel):
-    sender: str
-    receiver: str
-    amount: float
-    currency: str
+class RegisterUserRequest(BaseModel):
+    user_address: str
 
-class BlockchainTransactionResponse(BaseModel):
-    tx_hash: str
-    sender: str
-    receiver: str
-    amount: float
-    currency: str
-    confirmations: int
-    timestamp: datetime
+class LinkWalletRequest(BaseModel):
+    user_address: str
+    wallet_address: str

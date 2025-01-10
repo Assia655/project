@@ -6,6 +6,11 @@ from schemas import UserCreate, WalletCreate
 from services.wallet import create_wallet_service 
 from models.wallet import WalletCurrency
 from utils.password import hash_password, verify_password
+from app.models.user import User
+from app.models.wallet import WalletCurrency
+from app.schemas import UserCreate, WalletCreate
+from app.services.wallet import create_wallet_service 
+from app.utils.password import hash_password, verify_password
 
 def get_user_by_username(db: Session, username: str) -> User:
     """Récupérer un utilisateur par son nom d'utilisateur."""
@@ -46,7 +51,6 @@ def create_user(db: Session, user: UserCreate) -> User:
             create_wallet_service(db,wallet_data)
 
         return db_user
-
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
