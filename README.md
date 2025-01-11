@@ -788,7 +788,7 @@ Grafana is used to create interactive dashboards for visualizing data stored in 
 Contact
 For any questions or feedback, feel free to contact the team:
 - Niama Aqarial (Frontend Developer): niama.aqarial@gmail.com
-- Salma Doumi (Backend Developer) :
+- Salma Doumi (Backend Developer) : salmadoumi111@gmail.com
 - Assia Haimeur (DevOps Engineer) : haimeurassia70@gmail.com
 - Karima Ahdich (Blockchain Developer) : karimaahdich@gmail.com
 - Chaimae Ababri (Data Analyst) : chaimaeababri14@gmail.com
