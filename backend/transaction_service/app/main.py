@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException,APIRouter
 from sqlalchemy.orm import Session
 from app.services import transaction
 from app.models.transactions import Transaction
@@ -22,7 +22,19 @@ from app.services.transaction import (
     get_transactions_by_user,
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autoriser toutes les origines pour les tests
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Méthodes HTTP autorisées
+    allow_headers=["*"],  # En-têtes autorisés
+)
+
+
 @app.on_event("startup")
 async def startup_event():
     create_tables()
@@ -60,17 +72,20 @@ def create_new_transaction(data: TransactionCreate, db: Session = Depends(get_db
     return create_transaction(db, data)
 
 
-@app.get("/transactions", response_model=list)
-def fetch_all_transactions(db: Session = Depends(get_db)):
-    return get_all_transactions(db)
+@app.get("/transactions", response_model=list[TransactionResponse])  # Utiliser List pour une liste de réponses
+async def get_transactions(db: Session = Depends(get_db)):
+    transactions = db.query(Transaction).all()  # Récupérer toutes les transactions
+    if not transactions:
+        raise HTTPException(status_code=404, detail="No transactions found")
+    return transactions  # FastAPI utilisera TransactionResponse pour chaque transaction
 
-
-@app.get("/transactions/{transaction_id}", response_model=dict)
+@app.get("/transactions/{transaction_id}", response_model=TransactionResponse)
 def fetch_transaction_by_id(transaction_id: int, db: Session = Depends(get_db)):
     transaction = get_transaction_by_id(db, transaction_id)
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
-    return transaction
+    
+    return transaction  # FastAPI convertira automatiquement l'objet en un modèle TransactionResponse grâce à 'orm_mode'
 
 # Endpoint pour récupérer les transactions d'un utilisateur
 @app.get("/transactions_by/{seller_id}")
@@ -80,6 +95,18 @@ def get_transactions_for_user(seller_id: int, db: Session = Depends(get_db)):
     if not transactions:
         raise HTTPException(status_code=404, detail="Transactions not found")
     return transactions
+
+@app.get("/transactions/by_user/{user_id}", response_model=TransactionResponse)
+def get_transaction_by_user_id(user_id: int, db: Session = Depends(get_db)):
+    """Récupérer une transaction basée sur l'ID de l'acheteur ou du vendeur"""
+    transaction = db.query(Transaction).filter(
+        (Transaction.buyer_id == user_id) | (Transaction.seller_id == user_id)
+    ).first()  # Utilisez `first()` pour obtenir une seule transaction
+
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    
+    return transaction
 
 
 # @app.get("/transactions/my")

@@ -10,16 +10,16 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  private apiUrl = 'http://localhost:8004/token'; 
   login(username: string, password: string): Observable<{ access_token: string; user_id: number }> {
     const body = new URLSearchParams();
     body.set('username', username);
     body.set('password', password);
-  
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-  
     return this.http.post<{ access_token: string; user_id: number }>(this.apiUrl, body.toString(), { headers });
   }
-  
+   signup(user: { username: string, email: string, password: string }): Observable<any> {
+    return this.http.post('http://localhost:8004/users', user);}
   
   
   getMyTransactions(token: string): Observable<any> {
@@ -36,18 +36,14 @@ export class ApiService {
 
   private apiUrl2 = 'http://transaction_service:8003/transactions';  // Adjust the URL to your API endpoint
 
-  // getTransactions(): Observable<any> {
-  //   return this.http.get(this.apiUrl2);
-  // }
 
   getTransactions(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl2}/${userId}`);  // Appeler l'API avec l'ID de l'utilisateur
+    return this.http.get(`${this.apiUrl2}/by_user/${userId}`);  
   }
 
   private apiUrl3 = 'http://price_service:8002';  // URL for your FastAPI backend
 
 
-  // Method to get market prices for EUR and ETH
   getMarketPrices(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl3}/prices`);  // Fetch the prices from the backend
   }

@@ -64,20 +64,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Ajout du middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Autorise toutes les origines (ou spécifiez l'origine exacte comme 'http://localhost:4200')
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Autorise toutes les méthodes HTTP (GET, POST, etc.)
-    allow_headers=["*"],  # Autorise tous les en-têtes
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
-
 
 @app.on_event("startup")
 async def startup_event():
     create_tables()
-
 
 # ====================================================
 # Endpoint pour vérifier l'état de santé du service
@@ -97,6 +94,12 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer","user_id":user.id}
 
+@app.post("/users/", response_model=UserResponse)
+def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
+    """Créer un utilisateur et ses wallets par défaut."""
+    new_user = create_user(db, user)
+    # Création automatique des wallets pour l'utilisateur (EURO, ETH, CARBON)
+    return new_user
 
 @app.get("/users/me", response_model=UserResponse)
 def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
@@ -112,12 +115,7 @@ def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get
     return user
 
 
-@app.post("/users/", response_model=UserResponse)
-def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
-    """Créer un utilisateur et ses wallets par défaut."""
-    new_user = create_user(db, user)
-    # Création automatique des wallets pour l'utilisateur (USD, ETH, CARBON)
-    return new_user
+
 
 # ====================================================
 # Gestion des wallets

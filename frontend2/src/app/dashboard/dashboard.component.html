@@ -1,6 +1,5 @@
 <app-sidebar></app-sidebar>
 <div class="dashboard-container">
-    <!-- Sales Profit Chart -->
     <div class="sales-profit">
       <div class="header">
         <h3>Ecocoin market</h3>
@@ -10,57 +9,48 @@
       </div>
     </div>
 
-    <!-- Stats Cards -->
     <div class="stats-cards">
       <div class="card followers">
         <div>
           <h4>ETH</h4>
-          <p>{{ ethBalance }}</p> <!-- Display ETH wallet balance -->
+          <p>{{ ethBalance }}</p> 
         </div>
       </div>
       <div class="card income">
         <div>
-          <h4>USD</h4>
-          <p>{{ eurBalance }}</p> <!-- Display USD wallet balance -->
+          <h4>EUR</h4>
+          <p>{{ eurBalance }}</p> 
         </div>
       </div>
     </div>
 
-    <!-- Popular Products -->
     <div class="popular-products">
       <h3>Market updates</h3>
       <div class="active-announcements">
         <h3>Active Announcements</h3>
         <ul>
           <li *ngFor="let announcement of activeAnnouncements">
-            <h4>{{ announcement.created_at }}</h4>
-            <p>{{ announcement.credit_amount }}</p>
+            <h4>seller id : {{ announcement.seller_id }}</h4>
+            <p>credit : {{ announcement.credit_amount }}</p>
           </li>
         </ul>
       </div>
-      
-
-    <!-- Earning Reports -->
+    </div>
+    
     <div class="earning-reports">
       <h3>Latest Transactions</h3>
       <ul>
-        <li>
-          <p>Transaction 1</p>
-          <span>-15.465 USD</span>
-        </li>
-        <li>
-            <p>Transaction 2</p>
-            <span>-15.465 USD</span>
-        </li>
-        <li>
-            <p>Transaction 3</p>
-            <span>-0.465 ETH</span>
-        </li>
-        <li>
-            <p>Transaction 4</p>
-            <span>-15.465 USD</span>
+        <li *ngFor="let transaction of transactions">
+          <p>Transaction ID: {{ transaction.id }}</p>
+          <span *ngIf="transaction.currency === 'EURO'">
+            {{ getTransactionAmount(transaction) }}
+          </span>
+          <span *ngIf="transaction.currency === 'ETH'">
+            {{ getTransactionAmount(transaction) }}
+          </span>
         </li>
       </ul>
+      
       <a href="#">View all</a>
     </div>
 </div>

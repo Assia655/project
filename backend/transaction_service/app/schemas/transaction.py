@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, root_validator
 from typing import Literal, Optional
 from enum import Enum
 from datetime import datetime
@@ -14,14 +14,15 @@ class TransactionCreate(BaseModel):
     announcement_id: Optional[int] = None
     recipient_id: Optional[int] = None
     credit_amount: float
-    currency: Literal["USD"]  # Restreint aux devises supportées
+    currency: Literal["EURO"]  # Restreint aux devises supportées
     type: TransactionType
 
-    @field_validator("*", mode="after")
+    @root_validator(pre=True)
     def check_transaction_fields(cls, values):
         credit_amount = values.get('credit_amount')
-        if credit_amount <= 0:
+        if credit_amount is not None and credit_amount <= 0:
             raise ValueError("credit_amount must be greater than 0")
+        
         transaction_type = values.get('type')
         announcement_id = values.get('announcement_id')
         recipient_id = values.get('recipient_id')
@@ -32,9 +33,9 @@ class TransactionCreate(BaseModel):
             raise ValueError("recipient_id is required for VIREMENT transactions")
 
         return values
+
     class Config:
         schema_extra = {
-    
             "examples": {
                 "payment": {
                     "buyer_id": 3,
@@ -47,11 +48,10 @@ class TransactionCreate(BaseModel):
                     "buyer_id": 3,
                     "recipient_id": 7,
                     "credit_amount": 50.0,
-                    "currency": "CARBON",
+                    "currency": "EURO",
                     "type": "virement"
                 }
             }
-    
         }
 
 
@@ -63,10 +63,11 @@ class TransactionResponse(BaseModel):
     credit_amount: float  # Montant de la transaction
     price_at_transaction: Optional[float] = None  # Prix du marché (pour les PAYMENT)
     total_price: Optional[float] = None  # Prix total calculé (pour les PAYMENT)
-    currency: str  # Devise ou actif (USD, CARBON, MCO2, etc.)
+    currency: str  # Devise ou actif (EURO, CARBON, MCO2, etc.)
     type: TransactionType  # Type de la transaction
     transaction_date: datetime  # Date de la transaction
     status: str  # Statut de la transaction (ex. pending, completed)
+
     class Config:
         schema_extra = {
             "example": {

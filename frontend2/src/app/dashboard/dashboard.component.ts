@@ -16,8 +16,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   eurPrices: number[] = [];
   ethPrices: number[] = [];
   
-  ethBalance: number = 0; // Balance for ETH wallet
-  eurBalance: number = 0; // Balance for USD wallet
+  ethBalance: number = 0; 
+  eurBalance: number = 0; 
 
   chartData: ChartConfiguration['data'] = {
     labels: [], // Liste des dates
@@ -71,12 +71,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   chartInstance!: Chart;
   
-  activeAnnouncements: { id: number; credit_amount: Number; created_at: Date; }[] = [];
+  activeAnnouncements: { id: number; credit_amount: Number; seller_id: Number; }[] = [];
+  transactions: any[] = []; // To store the transactions
 
   constructor(private apiService: ApiService) {}
-
+  userId: number = 0;  
   ngOnInit(): void {
-    this.fetchActiveAnnouncements(); // Appel pour récupérer les annonces actives
+    this.fetchActiveAnnouncements(); 
 
     // Fetch market prices for chart
     this.apiService.getMarketPrices().subscribe(
@@ -90,15 +91,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Erreur lors de la récupération des données :', error);
       }
     );
-  
-    // Récupérer l'ID de l'utilisateur actuel depuis le localStorage
-    const userId = localStorage.getItem('user_id');
-console.log('Current User ID from localStorage:', userId); // Vérifiez l'ID de l'utilisateur
 
-    if (userId) {
-      // Utilise userId pour récupérer les wallets
-      this.getWalletBalance(parseInt(userId), 'ETH');
-      this.getWalletBalance(parseInt(userId), 'EURO');
+  
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.userId = Number(storedUserId);
+      console.log('Current User ID from localStorage:', this.userId);
+    }    console.log('Current User ID from localStorage:', this.userId); // Vérifiez l'ID de l'utilisateur
+
+    if (this.userId) {
+      this.getWalletBalance(this.userId, 'ETH');
+      this.getWalletBalance(this.userId, 'EURO');
+      this.apiService.getTransactions(this.userId).subscribe(response => {
+        if (Array.isArray(response)) {
+          this.transactions = response;
+        } else if (response) {
+          this.transactions = [response];  // transforme un objet unique en tableau
+        } else {
+          this.transactions = [];  // Aucune transaction, assignez un tableau vide
+        }
+      }, error => {
+        console.error('Erreur lors de la récupération des transactions', error);
+        this.transactions = [];  
+      });
     } else {
       console.error('Utilisateur non connecté');
     }
@@ -129,10 +144,10 @@ updateChart(): void {
   this.chartData.datasets[0].data = this.eurPrices.reverse();
   this.chartData.datasets[1].data = this.ethPrices.reverse();
 
-  if (this.chartInstance) {
-    this.chartInstance.update(); // Met à jour le graphique
+    if (this.chartInstance) {
+      this.chartInstance.update(); // Mettre a jour le graphique
+    }
   }
-}
 
   getWalletBalance(userId: number, currency: string): void {
     this.apiService.getWallets(userId, currency).subscribe(
@@ -146,11 +161,12 @@ updateChart(): void {
           }
         }
       },
-      (      error: any) => {
+      (error: any) => {
         console.error('Erreur lors de la récupération des wallets:', error);
       }
     );
   }
+
   fetchActiveAnnouncements(): void {
     this.apiService.getActiveAnnouncements().subscribe(
       data => {
