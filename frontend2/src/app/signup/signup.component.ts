@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
@@ -43,17 +42,4 @@ export class SignupComponent {
       }
     });
   }
-=======
-import { RouterModule } from '@angular/router';
-
-@Component({
-  selector: 'app-signup',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
-})
-export class SignupComponent {
-
->>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
 }

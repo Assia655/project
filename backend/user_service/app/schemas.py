@@ -22,13 +22,14 @@ class WalletResponse(BaseModel):
     id: int
     user_id: int
     balance: float
-    currency: WalletCurrency  # Représente la valeur sous forme de chaîne de caractères
-    address: Optional[str] = None  # Champ adresse pour le wallet
+    currency: WalletCurrency
+    address: Optional[str] = None
 
     class Config:
         orm_mode = True
         use_enum_values = True
-        
+        from_attributes = True  # Adding from_attributes=True for ORM compatibility
+
       
 
 # Schéma pour UserProfile
