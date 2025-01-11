@@ -656,7 +656,7 @@ jobs:
 
 ---
 
-# DataAnaliysis -Chaimae Abarbri
+# DataAnaliysis Contribution by Chaimae Abarbri
 ## 1. Data Scraping and Database Insertion
 
 ### 1.1 Scraping Objective
