@@ -6,14 +6,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: price-db
+      app: price_service_db
   template:
     metadata:
       labels:
-        app: price-db
+        app: price_service_db
     spec:
       containers:
-      - name: price-db
+      - name: price_service_db
         image: assiadoc/postgres:13
         ports:
         - containerPort: 5432
@@ -23,7 +23,7 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "1234"
         - name: POSTGRES_DB
-          value: "price_service_db"
+          value: "carbon_prices"
         volumeMounts:
         - name: price-db-storage
           mountPath: /var/lib/postgresql/data

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from consumers.transaction_consumer import TransactionConsumer
-from consumers.blockchain_consumer import BlockchainConsumer
+from app.consumers.transaction_consumer import TransactionConsumer
+from app.consumers.blockchain_consumer import BlockchainConsumer
 import asyncio
 
 app = FastAPI()

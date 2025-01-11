@@ -1,15 +1,11 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, Enum, String
 from sqlalchemy.orm import relationship
-from db.base import Base
+from app.db.base import Base
 from enum import Enum as PyEnum
 
 # Enum pour le type de monnaie
 class WalletCurrency(PyEnum):
-<<<<<<< HEAD
     EURO = "EURO"
-=======
-    USD = "USD"
->>>>>>> 8a1cd5e9c565bbcc395a5f340cef8368eb332fa1
     ETH = "ETH"
     CARBON = "CARBON"
 

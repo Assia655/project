@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from models.announcements import Announcement
-from schemas.announcement import AnnouncementCreate, AnnouncementUpdate
-from utils.price_service_api import get_price
+from app.models.announcements import Announcement
+from app.schemas.announcement import AnnouncementCreate, AnnouncementUpdate
+from app.utils.price_service_api import get_price
 
 def create_announcement(db: Session, announcement_data: AnnouncementCreate):
     # Récupérer le prix actuel du marché pour MCO2 en USD

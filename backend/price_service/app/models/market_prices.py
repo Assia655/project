@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, func
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
-from db.base import Base
+from app.db.base import Base
 
 
 class MarketPrice(Base):

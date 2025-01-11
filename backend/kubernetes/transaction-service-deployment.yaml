@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transaction-service
+  name: transaction_service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: transaction-service
+      app: transaction_service
   template:
     metadata:
       labels:
-        app: transaction-service
+        app: transaction_service
     spec:
       containers:
-      - name: transaction-service
+      - name: transaction_service
         image: assiadoc/backend-transaction_service:v1
         ports:
         - containerPort: 8003
         env:
         - name: DB_HOST
-          value: "transaction-db"
+          value: "transaction_db"
         - name: DB_USER
           value: "postgres"
         - name: DB_PASSWORD

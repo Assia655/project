@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from models.transactions import Transaction, TransactionType
-from models.announcements import Announcement
-from schemas.transaction import TransactionCreate
-from utils.user_service_api import get_wallet_balance, update_wallet_balance
-from utils.price_service_api import get_price
+from app.models.transactions import Transaction, TransactionType
+from app.models.announcements import Announcement
+from app.schemas.transaction import TransactionCreate
+from app.utils.user_service_api import get_wallet_balance, update_wallet_balance
+from app.utils.price_service_api import get_price
 
 
 def create_transaction(db: Session, transaction_data: TransactionCreate):

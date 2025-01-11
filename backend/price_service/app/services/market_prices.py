@@ -1,12 +1,12 @@
 from fastapi import HTTPException  # Importer depuis fastapi
 import subprocess
-from utils.scrapp import get_eth_price_on_date
+from app.utils.scrapp import get_eth_price_on_date
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from db.session import get_db  # Importing get_db from session.py
-from models.market_prices import CarbonEmissionsData, MarketPrice
-from schemas.market_price import MarketPriceCreate,MarketPriceResponse
-from utils.scrapp import scrape_and_insert_data
+from app.db.session import get_db  # Importing get_db from session.py
+from app.models.market_prices import CarbonEmissionsData, MarketPrice
+from app.schemas.market_price import MarketPriceCreate,MarketPriceResponse
+from app.utils.scrapp import scrape_and_insert_data
 
 
 # def create_market_price(db: Session, price: float):

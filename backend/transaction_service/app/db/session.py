@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db.base import Base
+from app.db.base import Base
 import os
 
 # Récupérer l'URL de la base de données à partir des variables d'environnement ou définir par défaut
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:1234@localhost:5431/transaction_service_db')
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:1234@transaction_db:5432/transaction_service_db')
 
 # Créer l'engine SQLAlchemy
 engine = create_engine(DATABASE_URL)

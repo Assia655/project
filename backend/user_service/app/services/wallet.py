@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.wallet import Wallet
-from schemas import WalletCreate, WalletCurrency
+from app.models.wallet import Wallet
+from app.schemas import WalletCreate, WalletCurrency
 from app.models.wallet import Wallet
 from app.schemas import WalletCreate, WalletCurrency
 

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from enum import Enum
-from db.base import Base
+from app.db.base import Base
 
 # Définir les types de transactions
 class TransactionType(str, Enum):

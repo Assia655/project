@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from models.user import User
+from app.models.user import User
 # from models.wallet import 
-from schemas import UserCreate, WalletCreate
-from services.wallet import create_wallet_service 
-from models.wallet import WalletCurrency
-from utils.password import hash_password, verify_password
+from app.schemas import UserCreate, WalletCreate
+from app.services.wallet import create_wallet_service 
+from app.models.wallet import WalletCurrency
+from app.utils.password import hash_password, verify_password
 from app.models.user import User
 from app.models.wallet import WalletCurrency
 from app.schemas import UserCreate, WalletCreate

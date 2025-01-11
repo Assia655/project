@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exposer le port utilisé par l'application FastAPI
-EXPOSE 8006
+EXPOSE 8002
 
 # Définir la commande de démarrage pour Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8006"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8002"]

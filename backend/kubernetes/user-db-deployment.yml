@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-db
+  name: user_db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-db
+      app: user_db
   template:
     metadata:
       labels:
-        app: user-db
+        app: user_db
     spec:
       containers:
-      - name: user-db
+      - name: user_db
         image: assiadoc/postgres:13
         env:
         - name: POSTGRES_DB

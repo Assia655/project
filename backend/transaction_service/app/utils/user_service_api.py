@@ -1,6 +1,7 @@
 import requests
 
-USER_SERVICE_URL = "http://127.0.0.1:8004"  # Base URL du service utilisateur
+#USER_SERVICE_URL = "http://127.0.0.1:8004" 
+USER_SERVICE_URL = "http://user_service:8004" # Base URL du service utilisateur
 
 def get_wallet_balance(user_id: int, currency: str):
     """Récupère le solde du portefeuille utilisateur pour une devise spécifique."""

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from db.session import get_db
-from services.market_prices import get_latest_price, get_all_prices
+from app.db.session import get_db
+from app.services.market_prices import get_latest_price, get_all_prices
 from datetime import datetime
 
 app = FastAPI(title="Price Service API")
