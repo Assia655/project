@@ -136,7 +136,6 @@ Solidity is a high-level programming language used for writing smart contracts o
 - **Wallet Association**: After registering a user, a wallet address can be associated with the user through the `linkWallet()` function.
 - **Carbon Credit Credit**: The `creditCarbon()` function allows the owner to add carbon credits for a specific user.
 - **Ownership Management**: Only the owner of the contract (the address that deployed the contract) can call sensitive functions such as `registerUser`, `linkWallet`, and `creditCarbon`.
-![App Screenshot](./img/edit_user.png)
 
 ## Contract `CarbonToken.sol`
 ### Features:
