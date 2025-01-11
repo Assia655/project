@@ -732,7 +732,7 @@ The data extraction process is carried out in the following steps:
 - **Analyze cryptocurrency movements**: Study the evolution of exchanged tokens.
 - **Provide interactive financial reports**: Use visualization tools for real-time insights.
 
-![dash1](./img/dashboard1.jpg)
+
 
 ### 3.2 Results
 - **Total Transaction Volumes**: Most transactions have a total value under 1200 EUR.
@@ -753,7 +753,7 @@ Grafana is used to create interactive dashboards for visualizing data stored in 
 - **EUR Carbon Prices**: Fluctuations between 63.0 and 74.2 EUR.
 - **ETH Carbon Prices**: Prices range from 0.0166 to 0.0228 ETH.
 
-![dash1](./img/dashboard.jpg)
+![dash1](./img/dashboard1.jpg)
 ![dash2](./img/dashboard2.jpg)
 
 
