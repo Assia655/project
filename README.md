@@ -26,10 +26,10 @@ EcoCoin is a platform that enables trading carbon tokens, with each token repres
 
 ## Technologies Used
 - Frontend: Angular, Angular Material
-- Backend: FastApi
+- Backend:
 - Blockchain: Ethereum-based smart contracts
-- DevOps: Docker, CI/CD pipelines
-- Data Analysis: Python, Pandas, Machine Learning
+- DevOps: Docker,Kubernetes,docker hub ,AKS,Kind, CI/CD pipelines(github actions)
+- Data Analysis: 
 
 ---
 
