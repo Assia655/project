@@ -122,7 +122,12 @@ def get_all_transactions(db: Session):
     """Récupérer toutes les transactions."""
     return db.query(Transaction).all()
 
-
 def get_transactions_by_user(db: Session, seller_id: int):
     """Récupérer les transactions pour un utilisateur spécifique"""
     return db.query(Transaction).filter(Transaction.seller_id == seller_id).all()
+
+def get_transaction_by_user(db: Session, user_id: int):
+    """Récupérer une transaction par buyer_id ou seller_id"""
+    return db.query(Transaction).filter(
+        (Transaction.buyer_id == user_id) | (Transaction.seller_id == user_id)
+    ).first()

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from models.wallet import Wallet
 from schemas import WalletCreate, WalletCurrency
-from app.models.wallet import Wallet
-from app.schemas import WalletCreate, WalletCurrency
+from models.wallet import Wallet
+from schemas import WalletCreate, WalletCurrency
 
 def create_wallet_service(db: Session, wallet_create: WalletCreate):
     db_wallet = Wallet(
