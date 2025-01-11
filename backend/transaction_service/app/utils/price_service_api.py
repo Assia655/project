@@ -1,6 +1,7 @@
 import requests
 
-PRICE_SERVICE_URL = "http://127.0.0.1:8002"  # Adresse du service Price Service
+#PRICE_SERVICE_URL = "http://127.0.0.1:8002" 
+PRICE_SERVICE_URL = "http://price_service:8002" # Adresse du service Price Service
 
 def get_price(currency: str):
     """Récupère le prix actuel de la devise ou de l'actif depuis price_service."""

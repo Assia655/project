@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, Enum, String
 from sqlalchemy.orm import relationship
-from db.base import Base
+from app.db.base import Base
 from enum import Enum as PyEnum
 
 # Enum pour le type de monnaie

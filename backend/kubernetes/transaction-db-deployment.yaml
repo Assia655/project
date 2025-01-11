@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transaction-db
+  name: transaction_db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: transaction-db
+      app: transaction_db
   template:
     metadata:
       labels:
-        app: transaction-db
+        app: transaction_db
     spec:
       containers:
-      - name: transaction-db
+      - name: transaction_db
         image: assiadoc/postgres:13
         ports:
         - containerPort: 5432

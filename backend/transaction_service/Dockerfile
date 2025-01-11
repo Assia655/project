@@ -17,5 +17,4 @@ COPY . .
 EXPOSE 8003
 
 # Définir la commande de démarrage pour Uvicorn
-#CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8003"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]

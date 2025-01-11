@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from db.session import get_db
-from schemas import (
+from app.db.session import get_db
+from app.schemas import (
     UserCreate,
     UserResponse,
     WalletCreate,
@@ -10,12 +10,12 @@ from schemas import (
     UserProfileCreate,
     UserProfileResponse,
 )
-from services.user import (
+from app.services.user import (
     authenticate_user,
     create_user,
     get_user_by_username,
 )
-from services.wallet import (
+from app.services.wallet import (
     create_wallet_service,
     get_user_wallet_balance,
     get_wallets_by_user_service,
@@ -23,14 +23,14 @@ from services.wallet import (
     update_wallet_balance_service,
     delete_wallet_service,
 )
-from services.user_profil import (
+from app.services.user_profil import (
     create_user_profile_service,
     get_user_profile_service,
     update_user_profile_service,
     delete_user_profile_service,
 )
-from utils.jwt import create_access_token, verify_access_token
-from db.initdb import create_tables
+from app.utils.jwt import create_access_token, verify_access_token
+from app.db.initdb import create_tables
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 # @asynccontextmanager

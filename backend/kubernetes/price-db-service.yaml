@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: price-db
+  name: price_service_db
 spec:
   selector:
-    app: price-db
+    app: price_service_db
   ports:
     - protocol: TCP
       port: 5432

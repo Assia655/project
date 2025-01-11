@@ -77,10 +77,11 @@ def process_data_backwards(conn, cursor, rows, last_eth_price):
 def scrape_and_insert_data():
     conn = psycopg2.connect(
         dbname="carbon_prices",
+        dbname="carbon_prices",
         user="postgres",
         password="1234",
-        host="localhost",
-        port="5431"
+        host="price_service_db",
+        port="5432"
     )
     cursor = conn.cursor()
 

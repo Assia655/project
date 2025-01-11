@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: user_service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: user-service
+      app: user_service
   template:
     metadata:
       labels:
-        app: user-service
+        app: user_service
     spec:
       containers:
-      - name: user-service
+      - name: user_service
         image: assiadoc/backend-user_service:v2
         ports:
         - containerPort: 8004
         env:
         - name: DB_HOST
-          value: "user-db"
+          value: "user_db"
         - name: DB_USER
           value: "postgres"
         - name: DB_PASSWORD

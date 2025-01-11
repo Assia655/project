@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.user import UserProfile
-from schemas import UserProfileCreate
+from app.models.user import UserProfile
+from app.schemas import UserProfileCreate
 
 def create_user_profile_service(db: Session, profile_data: UserProfileCreate):
     """Créer un profil utilisateur (seller/buyer)."""

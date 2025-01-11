@@ -118,6 +118,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       console.error('Utilisateur non connecté');
     }
   }
+  
+  
 
   ngAfterViewInit(): void {
     if (typeof document !== 'undefined') {
@@ -137,10 +139,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateChart(): void {
-    this.chartData.labels = this.dates.reverse();
-    this.chartData.datasets[0].data = this.eurPrices.reverse();
-    this.chartData.datasets[1].data = this.ethPrices.reverse();
+updateChart(): void {
+  this.chartData.labels = this.dates.reverse();
+  this.chartData.datasets[0].data = this.eurPrices.reverse();
+  this.chartData.datasets[1].data = this.ethPrices.reverse();
 
     if (this.chartInstance) {
       this.chartInstance.update(); // Mettre a jour le graphique
@@ -175,14 +177,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-  getTransactionAmount(transaction: any): string {
-    if (transaction.buyer_id === this.userId) {
-      return `-${transaction.total_price} ${transaction.currency}`;
-    } else if (transaction.seller_id === this.userId) {
-      return `${transaction.total_price} ${transaction.currency}`;
-    } else {
-      return 'Transaction inconnue';
-    }
-  }
 }
+

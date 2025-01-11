@@ -1,16 +1,16 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from models.user import User
+from app.models.user import User
 # from models.wallet import 
-from schemas import UserCreate, WalletCreate
-from services.wallet import create_wallet_service 
-from models.wallet import WalletCurrency
-from utils.password import hash_password, verify_password
-from models.user import User
-from models.wallet import WalletCurrency
-from schemas import UserCreate, WalletCreate
-from services.wallet import create_wallet_service 
-from utils.password import hash_password, verify_password
+from app.schemas import UserCreate, WalletCreate
+from app.services.wallet import create_wallet_service 
+from app.models.wallet import WalletCurrency
+from app.utils.password import hash_password, verify_password
+from app.models.user import User
+from app.models.wallet import WalletCurrency
+from app.schemas import UserCreate, WalletCreate
+from app.services.wallet import create_wallet_service 
+from app.utils.password import hash_password, verify_password
 
 def get_user_by_username(db: Session, username: str) -> User:
     """Récupérer un utilisateur par son nom d'utilisateur."""
