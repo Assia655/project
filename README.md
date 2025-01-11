@@ -770,8 +770,9 @@ Grafana is used to create interactive dashboards for visualizing data stored in 
 - The frontend is linked to the backend via an API service in Angular, allowing users to view their wallet balances, carbon prices, and transaction details on the dashboard.
 
 ### 5.3 Services Linked
-- **Price Service**: Displays the latest carbon price in EUR or ETH.
-- **Transaction Service**: Displays user transactions and balances.
+- *User Service* : Permet login and signin, also returning wallet'balance for each user. 
+- *Price Service*: Displays the latest carbon price in EUR or ETH.
+- *Transaction Service*: Displays user transactions and balances.
 
 ## 6. Conclusion
 
